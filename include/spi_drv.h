@@ -1,5 +1,6 @@
 /*
-  spi_drv.h - Library for Arduino Wifi shield.
+  spi_drv.h - Library for Arduino Wifi shield ported to C.
+  Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
   Copyright (c) 2018 Arduino SA. All rights reserved.
   Copyright (c) 2011-2014 Arduino.  All right reserved.
 
@@ -21,90 +22,34 @@
 #ifndef SPI_Drv_h
 #define SPI_Drv_h
 
-#include <inttypes.h>
-#include <Arduino.h>
-#include <SPI.h>
-#include "utility/wifi_spi.h"
-#include "debug.h"
-
-#define SPI_START_CMD_DELAY 	10
-
-#define NO_LAST_PARAM   0
-#define LAST_PARAM      1
+#include "project.h"
+#include "wifi_spi.h"
+#include "FreeRTOS.h"
 
 #define DUMMY_DATA  0xFF
 
-#define WAIT_FOR_SLAVE_SELECT()	      \
-	if (!SpiDrv::initialized) {           \
-		SpiDrv::begin();      \
-	}                             \
-	SpiDrv::waitForSlaveReady();  \
-	SpiDrv::spiSlaveSelect();
+void SpiDrv_begin(void);
 
-class SpiDrv
-{
-private:
-	//static bool waitSlaveReady();
-	static void waitForSlaveSign();
-	static void getParam(uint8_t* param);
-public:
-    static bool initialized;
+void SpiDrv_end(void);
 
-    static void begin();
+void SpiDrv_waitForSlaveSelect(void);
 
-    static void end();
-    
-    static void spiDriverInit();
-        
-    static void spiSlaveSelect();
-    
-    static void spiSlaveDeselect();
-    
-    static char spiTransfer(volatile char data);
+void SpiDrv_spiSlaveSelect(void);
 
-    static void waitForSlaveReady();
+void SpiDrv_spiSlaveDeselect(void);
 
-    //static int waitSpiChar(char waitChar, char* readChar);
+uint8 SpiDrv_readChar();
 
-    static int waitSpiChar(unsigned char waitChar);
-    
-    static int readAndCheckChar(char checkChar, char* readChar);
+void SpiDrv_waitForSlaveReady();
 
-    static char readChar();
+void SpiDrv_waitForSlaveReadyTimeout(TickType_t timeout);
 
-    static int waitResponseParams(uint8_t cmd, uint8_t numParam, tParam* params);
-    
-    static int waitResponseCmd(uint8_t cmd, uint8_t numParam, uint8_t* param, uint8_t* param_len);
+void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params);
 
-    static int waitResponseData8(uint8_t cmd, uint8_t* param, uint8_t* param_len);
-     
-    static int waitResponseData16(uint8_t cmd, uint8_t* param, uint16_t* param_len);
- /*
-    static int waitResponse(uint8_t cmd, tParam* params, uint8_t* numParamRead, uint8_t maxNumParams);
-    
-    static int waitResponse(uint8_t cmd, uint8_t numParam, uint8_t* param, uint16_t* param_len);
-*/
-    static int waitResponse(uint8_t cmd, uint8_t* numParamRead, uint8_t** params, uint8_t maxNumParams);
+int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParams *params, uint8 maxNumParams);
 
-    static void sendParam(uint8_t* param, uint8_t param_len, uint8_t lastParam = NO_LAST_PARAM);
+void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params);
 
-    static void sendParamLen8(uint8_t param_len);
-
-    static void sendParamLen16(uint16_t param_len);
-
-    static uint8_t readParamLen8(uint8_t* param_len = NULL);
-
-    static uint16_t readParamLen16(uint16_t* param_len = NULL);
-
-    static void sendBuffer(uint8_t* param, uint16_t param_len, uint8_t lastParam = NO_LAST_PARAM);
-
-    static void sendParam(uint16_t param, uint8_t lastParam = NO_LAST_PARAM);
-    
-    static void sendCmd(uint8_t cmd, uint8_t numParam);
-
-    static int available();
-};                                                                 
-
-extern SpiDrv spiDrv;
+int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParams *params, uint8 maxNumParams);
 
 #endif

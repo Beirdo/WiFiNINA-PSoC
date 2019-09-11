@@ -118,30 +118,20 @@ enum wl_tcp_state {
 };
 
 
-enum numParams{
-    PARAM_NUMS_0,
-    PARAM_NUMS_1,
-    PARAM_NUMS_2,
-    PARAM_NUMS_3,
-    PARAM_NUMS_4,
-    PARAM_NUMS_5,
-    MAX_PARAM_NUMS
-};
-
-#define MAX_PARAMS MAX_PARAM_NUMS-1
+#define MAX_PARAMS 5
 #define PARAM_LEN_SIZE 1
 
 typedef struct  __attribute__((__packed__))
 {
-	uint8_t     paramLen;
-	char*	    param;
-}tParam;
+	uint8     paramLen;
+	char*	  param;
+} tParam;
 
 typedef struct  __attribute__((__packed__))
 {
 	uint16_t     dataLen;
 	char*	     data;
-}tDataParam;
+} tDataParam;
 
 
 typedef struct  __attribute__((__packed__))
@@ -150,7 +140,7 @@ typedef struct  __attribute__((__packed__))
 	unsigned char	tcmd;
 	unsigned char	nParam;
 	tParam	params[MAX_PARAMS];
-}tSpiMsg;
+} tSpiMsg;
 
 typedef struct  __attribute__((__packed__))
 {
@@ -158,7 +148,7 @@ typedef struct  __attribute__((__packed__))
 	unsigned char	tcmd;
 	unsigned char	nParam;
 	tDataParam		params[MAX_PARAMS];
-}tSpiMsgData;
+} tSpiMsgData;
 
 
 typedef struct  __attribute__((__packed__))

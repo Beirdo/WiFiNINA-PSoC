@@ -28,7 +28,6 @@ extern int8 WIFININA_SLAVESELECT, WIFININA_SLAVEREADY, WIFININA_SLAVERESET, WIFI
 
 #include "wl_definitions.h"
 #include "wl_types.h"
-#include "debug.h"
 
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue) {
@@ -84,8 +83,7 @@ int WiFi_begin(const char *ssid, const char *passphrase) {
     return WiFi_begin_common();
 }
 
-uint8 WiFi_beginAP_common(void)
-{
+uint8 WiFi_beginAP_common(void) {
     uint8 status = WL_IDLE_STATUS;
     uint8 attempts = WL_MAX_ATTEMPT_CONNECTION;
 
@@ -133,7 +131,8 @@ void WiFi_config_static_dns_gateway(IPAddress local_ip, IPAddress dns_server, IP
     WiFiDrv_setDNS(1, (uint32) dns_server, 0);
 }
 
-void WiFi_config_static_dns_gateway_subnet(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet) {
+void
+WiFi_config_static_dns_gateway_subnet(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet) {
     WiFiDrv_config(3, (uint32) local_ip, (uint32) gateway, (uint32) subnet);
     WiFiDrv_setDNS(1, (uint32) dns_server, 0);
 }
@@ -267,7 +266,7 @@ int WiFi_ping_hostname(const char *hostname, int ttl) {
 }
 
 int WiFi_ping_ipaddress(IPAddress host, int ttl) {
-    if(ttl <= 0) {
+    if (ttl <= 0) {
         ttl = 128;
     }
     return WiFiDrv_ping(host, ttl);

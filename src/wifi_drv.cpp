@@ -49,57 +49,32 @@ char    WiFiDrv::fwVersion[] = {0};
 
 
 // Private Methods
-
-void WiFiDrv::getNetworkData(uint8_t *ip, uint8_t *mask, uint8_t *gwip)
+// TODO: example!
+int WiFiDrv::getNetworkData(uint8_t *ip, uint8_t *mask, uint8_t *gwip)
 {
-    tParam params[PARAM_NUMS_3] = { {0, (char*)ip}, {0, (char*)mask}, {0, (char*)gwip}};
-
-    WAIT_FOR_SLAVE_SELECT();
+    uint8 _dummy = DUMMY_DATA;
+    tParam inParams[] = { {sizeof(_dummy), &dummy} };
+    tParam outParams[] = { {4, ip}, {4, mask}, {4, gwip} };
+    uint8 paramsRead;
 
     // Send Command
-    SpiDrv::sendCmd(GET_IPADDR_CMD, PARAM_NUMS_1);
-
-    uint8_t _dummy = DUMMY_DATA;
-    SpiDrv::sendParam(&_dummy, sizeof(_dummy), LAST_PARAM);
-
-    // pad to multiple of 4
-    SpiDrv::readChar();
-    SpiDrv::readChar();
-
-    SpiDrv::spiSlaveDeselect();
-    //Wait the reply elaboration
-    SpiDrv::waitForSlaveReady();
-    SpiDrv::spiSlaveSelect();
+    SpiDrv_sendCmd(GET_IPADDR_CMD, 1, inParams);
 
     // Wait for reply
-    SpiDrv::waitResponseParams(GET_IPADDR_CMD, PARAM_NUMS_3, params);
-
-    SpiDrv::spiSlaveDeselect();
+    return SpiDrv_receiveResponseCmd(GET_IPADDR_CMD, 24, &paramsRead, outParams, 3);
 }
 
-void WiFiDrv::getRemoteData(uint8_t sock, uint8_t *ip, uint8_t *port)
+void WiFiDrv::getRemoteData(uint8 sock, uint8_t *ip, uint8_t *port)
 {
-    tParam params[PARAM_NUMS_2] = { {0, (char*)ip}, {0, (char*)port} };
-
-    WAIT_FOR_SLAVE_SELECT();
+    tParam inParams[] = { {sizeof(sock), &sock} };
+    tParam outParams[] = { {4, ip}, {2, port} };
+    uint8 paramsRead;
 
     // Send Command
-    SpiDrv::sendCmd(GET_REMOTE_DATA_CMD, PARAM_NUMS_1);
-    SpiDrv::sendParam(&sock, sizeof(sock), LAST_PARAM);
-
-    // pad to multiple of 4
-    SpiDrv::readChar();
-    SpiDrv::readChar();
-
-    SpiDrv::spiSlaveDeselect();
-    //Wait the reply elaboration
-    SpiDrv::waitForSlaveReady();
-    SpiDrv::spiSlaveSelect();
+    SpiDrv_sendCmd(GET_REMOTE_DATA_CMD, 1, inParams);
 
     // Wait for reply
-    SpiDrv::waitResponseParams(GET_REMOTE_DATA_CMD, PARAM_NUMS_2, params);
-
-    SpiDrv::spiSlaveDeselect();
+    SpiDrv_receiveResponseCmd(GET_REMOTE_DATA_CMD, 24, &paramsRead, outParams, 2);
 }
 
 
