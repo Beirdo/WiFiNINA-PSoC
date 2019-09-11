@@ -23,9 +23,11 @@ http://www.arduino.cc/en/Reference/WiFiNINA
 
 == License ==
 
-Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.    
-Copyright (c) 2018 Arduino SA. All rights reserved.    
-Copyright (c) 2011-2014 Arduino LLC. All right reserved.    
+....
+Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
+Copyright (c) 2018 Arduino SA. All rights reserved.
+Copyright (c) 2011-2014 Arduino LLC. All right reserved.
+....
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
