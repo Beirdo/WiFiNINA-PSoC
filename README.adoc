@@ -9,6 +9,8 @@ Unfortunately, I can see no easy way to extend the IDE to use C++, so I'm
 porting this library to C so I can use it, and have an Adafruit Airlift board
 attached using SPI.
 
+It will be targeted to run under FreeRTOS, and will depend on a few built-in blocks (like SPI).
+
 I have not yet decided if I intend to port future changes or not.  I have
 removed the examples and the Arduino-specific packaging files.
 
