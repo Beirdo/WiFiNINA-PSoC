@@ -1,6 +1,16 @@
-= WiFiNINA Library for Arduino =
+= WiFiNINA Library for Cypress PSoc Creator =
 
-image:https://travis-ci.com/adafruit/WiFiNINA.svg?branch=master["Build Status", link="https://travis-ci.com/adafruit/WiFiNINA"]
+**Porting this to a C library**
+
+I am in the middle of designing a system that historically I would likely have
+used Arduino for, but I'm feeling adventurous, and want to use a Cypress PSoC
+chipset instead (actually two of them, one ARM Cortex-M3, and one Cortex-M0).
+Unfortunately, I can see no easy way to extend the IDE to use C++, so I'm
+porting this library to C so I can use it, and have an Adafruit Airlift board
+attached using SPI.
+
+I have not yet decided if I intend to port future changes or not.  I have
+removed the examples and the Arduino-specific packaging files.
 
 **Modified to allow any pins to be used for Adafruit Airlift Boards**
 
@@ -13,8 +23,9 @@ http://www.arduino.cc/en/Reference/WiFiNINA
 
 == License ==
 
-Copyright (c) 2018 Arduino SA. All rights reserved.
-Copyright (c) 2011-2014 Arduino LLC. All right reserved.
+Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.    
+Copyright (c) 2018 Arduino SA. All rights reserved.    
+Copyright (c) 2011-2014 Arduino LLC. All right reserved.    
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
