@@ -1,5 +1,6 @@
 /*
-  WiFi.h - Library for Arduino Wifi shield.
+  WiFi.h - Library for Arduino Wifi shield ported to C.
+  Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
   Copyright (c) 2018 Arduino SA. All rights reserved.
   Copyright (c) 2011-2014 Arduino LLC.  All right reserved.
 
