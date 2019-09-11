@@ -38,9 +38,11 @@
 /*
  * Driver initialization
  */
-void WiFiDrv_wifiDriverInit();
+void WiFiDrv_wifiDriverInit(void);
 
-void WiFiDrv_wifiDriverDeinit();
+void WiFiDrv_wifiDriverDeinit(void);
+
+int WiFiDrv_getRemoteData(uint8 sock, uint8 *ip, uint8 *port);
 
 /*
  * Set the desired network which the connection manager should try to
@@ -52,7 +54,7 @@ void WiFiDrv_wifiDriverDeinit();
  * param ssid_len: Length of ssid string.
  * return: WL_SUCCESS or WL_FAILURE
  */
-int8 WiFiDrv_wifiSetNetwork(const char* ssid, uint8 ssid_len);
+int WiFiDrv_wifiSetNetwork(const char* ssid, uint8 ssid_len);
 
 /* Start Wifi connection with passphrase
  * the most secure supported mode will be automatically selected
@@ -64,7 +66,7 @@ int8 WiFiDrv_wifiSetNetwork(const char* ssid, uint8 ssid_len);
  * param len: Lenght of passphrase string.
  * return: WL_SUCCESS or WL_FAILURE
  */
-int8 WiFiDrv_wifiSetPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len);
+int WiFiDrv_wifiSetPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len);
 
 /* Start Wifi connection with WEP encryption.
  * Configure a key into the device. The key type (WEP-40, WEP-104)
@@ -77,10 +79,10 @@ int8 WiFiDrv_wifiSetPassphrase(const char* ssid, uint8 ssid_len, const char *pas
  * param len: Lenght of key string.
  * return: WL_SUCCESS or WL_FAILURE
  */
-int8 WiFiDrv_wifiSetKey(const char* ssid, uint8 ssid_len, uint8 key_idx, const void *key, const uint8 len);
+int WiFiDrv_wifiSetKey(const char* ssid, uint8 ssid_len, uint8 key_idx, const void *key, const uint8 len);
 
-int8 WiFiDrv_wifiSetApNetwork(const char* ssid, uint8 ssid_len);
-int8 WiFiDrv_wifiSetApPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len);
+int WiFiDrv_wifiSetApNetwork(const char* ssid, uint8 ssid_len);
+int WiFiDrv_wifiSetApPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len);
 
 /* Set ip configuration disabling dhcp client
     *
@@ -91,7 +93,7 @@ int8 WiFiDrv_wifiSetApPassphrase(const char* ssid, uint8 ssid_len, const char *p
     * param gateway: 	gateway configuration
     * param subnet: 	subnet mask configuration
     */
-void WiFiDrv_config(uint8 validParams, uint32 local_ip, uint32 gateway, uint32 subnet);
+int WiFiDrv_config(uint8 validParams, uint32 local_ip, uint32 gateway, uint32 subnet);
 
 /* Set DNS ip configuration
        *
@@ -101,58 +103,58 @@ void WiFiDrv_config(uint8 validParams, uint32 local_ip, uint32 gateway, uint32 s
        * param dns_server1: DNS server1 configuration
        * param dns_server2: DNS server2 configuration
        */
-void WiFiDrv_setDNS(uint8 validParams, uint32 dns_server1, uint32 dns_server2);
+int WiFiDrv_setDNS(uint8 validParams, uint32 dns_server1, uint32 dns_server2);
 
-void WiFiDrv_setHostname(const char* hostname);
+int WiFiDrv_setHostname(const char* hostname);
 
 /*
  * Disconnect from the network
  *
  * return: WL_SUCCESS or WL_FAILURE
  */
-int8 WiFiDrv_disconnect();
+int WiFiDrv_disconnect(void);
 
 /*
  * Disconnect from the network
  *
  * return: one value of wl_status_t enum
  */
-uint8 WiFiDrv_getConnectionStatus();
+int WiFiDrv_getConnectionStatus(void);
 
 /*
  * Get the interface MAC address.
  *
  * return: pointer to uint8 array with length WL_MAC_ADDR_LENGTH
  */
-uint8* WiFiDrv_getMacAddress();
+uint8* WiFiDrv_getMacAddress(void);
 
 /*
  * Get the interface IP address.
  *
  * return: copy the ip address value in IPAddress object
  */
-void WiFiDrv_getIpAddress(IPAddress *ip);
+int WiFiDrv_getIpAddress(IPAddress *ip);
 
 /*
  * Get the interface subnet mask address.
  *
  * return: copy the subnet mask address value in IPAddress object
  */
-void WiFiDrv_getSubnetMask(IPAddress *mask);
+int WiFiDrv_getSubnetMask(IPAddress *mask);
 
 /*
  * Get the gateway ip address.
  *
  * return: copy the gateway ip address value in IPAddress object
  */
-void WiFiDrv_getGatewayIP(IPAddress *ip);
+int WiFiDrv_getGatewayIP(IPAddress *ip);
 
 /*
  * Return the current SSID associated with the network
  *
  * return: ssid string
  */
-const char* WiFiDrv_getCurrentSSID();
+uint8* WiFiDrv_getCurrentSSID(void);
 
 /*
  * Return the current BSSID associated with the network.
@@ -160,7 +162,7 @@ const char* WiFiDrv_getCurrentSSID();
  *
  * return: pointer to uint8 array with length WL_MAC_ADDR_LENGTH
  */
-uint8* WiFiDrv_getCurrentBSSID();
+uint8* WiFiDrv_getCurrentBSSID(void);
 
 /*
  * Return the current RSSI /Received Signal Strength in dBm)
@@ -168,28 +170,28 @@ uint8* WiFiDrv_getCurrentBSSID();
  *
  * return: signed value
  */
-int32 WiFiDrv_getCurrentRSSI();
+int32 WiFiDrv_getCurrentRSSI(void);
 
 /*
  * Return the Encryption Type associated with the network
  *
  * return: one value of wl_enc_type enum
  */
-uint8 WiFiDrv_getCurrentEncryptionType();
+int WiFiDrv_getCurrentEncryptionType(void);
 
 /*
  * Start scan WiFi networks available
  *
  * return: Number of discovered networks
  */
-int8 WiFiDrv_startScanNetworks();
+int WiFiDrv_startScanNetworks(void);
 
 /*
  * Get the networks available
  *
  * return: Number of discovered networks
  */
-uint8 WiFiDrv_getScanNetworks();
+int WiFiDrv_getScanNetworks(void);
 
 /*
  * Return the SSID discovered during the network scan.
@@ -198,7 +200,7 @@ uint8 WiFiDrv_getScanNetworks();
  *
  * return: ssid string of the specified item on the networks scanned list
  */
-const char* WiFiDrv_getSSIDNetoworks(uint8 networkItem);
+uint8* WiFiDrv_getSSIDNetworks(uint8 networkItem);
 
 /*
  * Return the RSSI of the networks discovered during the scanNetworks
@@ -207,7 +209,7 @@ const char* WiFiDrv_getSSIDNetoworks(uint8 networkItem);
  *
  * return: signed value of RSSI of the specified item on the networks scanned list
  */
-int32 WiFiDrv_getRSSINetoworks(uint8 networkItem);
+int32 WiFiDrv_getRSSINetworks(uint8 networkItem);
 
 /*
  * Return the encryption type of the networks discovered during the scanNetworks
@@ -216,11 +218,11 @@ int32 WiFiDrv_getRSSINetoworks(uint8 networkItem);
  *
  * return: encryption type (enum wl_enc_type) of the specified item on the networks scanned list
  */
-uint8 WiFiDrv_getEncTypeNetowrks(uint8 networkItem);
+int WiFiDrv_getEncTypeNetworks(uint8 networkItem);
 
-uint8* WiFiDrv_getBSSIDNetowrks(uint8 networkItem, uint8* bssid);
+uint8* WiFiDrv_getBSSIDNetoworks(uint8 networkItem, uint8* bssid);
 
-uint8 WiFiDrv_getChannelNetowrks(uint8 networkItem);
+int WiFiDrv_getChannelNetworks(uint8 networkItem);
 
 /*
  * Resolve the given hostname to an IP address.
@@ -235,21 +237,21 @@ int WiFiDrv_getHostByName(const char* aHostname, IPAddress *aResult);
  * Get the firmware version
  * result: version as string with this format a.b.c
  */
-const char* WiFiDrv_getFwVersion();
+uint8* WiFiDrv_getFwVersion(void);
 
-uint32 WiFiDrv_getTime();
+uint32 WiFiDrv_getTime(void);
 
-void WiFiDrv_setPowerMode(uint8 mode);
+int WiFiDrv_setPowerMode(uint8 mode);
 
-int8 WiFiDrv_wifiSetApNetwork(const char* ssid, uint8 ssid_len, uint8 channel);
-int8 WiFiDrv_wifiSetApPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len, uint8 channel);
+int WiFiDrv_wifiSetApNetwork(const char* ssid, uint8 ssid_len, uint8 channel);
+int WiFiDrv_wifiSetApPassphrase(const char* ssid, uint8 ssid_len, const char *passphrase, const uint8 len, uint8 channel);
 
 int16 WiFiDrv_ping(uint32 ipAddress, uint8 ttl);
 
-void WiFiDrv_debug(uint8 on);
-float WiFiDrv_getTemperature();
-void WiFiDrv_pinMode(uint8 pin, uint8 mode);
-void WiFiDrv_digitalWrite(uint8 pin, uint8 value);
-void WiFiDrv_analogWrite(uint8 pin, uint8 value);
+int WiFiDrv_debug(uint8 on);
+int16 WiFiDrv_getTemperature(void);
+int WiFiDrv_pinMode(uint8 pin, uint8 mode);
+int WiFiDrv_digitalWrite(uint8 pin, uint8 value);
+int WiFiDrv_analogWrite(uint8 pin, uint8 value);
 
 #endif

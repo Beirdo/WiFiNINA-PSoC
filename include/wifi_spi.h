@@ -157,24 +157,24 @@ typedef struct  __attribute__((__packed__))
 	unsigned char	tcmd;
 	//unsigned char	totLen;
 	unsigned char	nParam;
-}tSpiHdr;
+} tSpiHdr;
 
 typedef struct  __attribute__((__packed__))
 {
 	uint8_t     paramLen;
 	uint32_t	param;
-}tLongParam;
+} tLongParam;
 
 typedef struct  __attribute__((__packed__))
 {
 	uint8_t     paramLen;
 	uint16_t	param;
-}tIntParam;
+} tIntParam;
 
 typedef struct  __attribute__((__packed__))
 {
 	uint8_t     paramLen;
 	uint8_t	param;
-}tByteParam;
+} tByteParam;
 
 #endif
