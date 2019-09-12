@@ -23,13 +23,13 @@
 #include "wl_types.h"
 #include "server_drv.h"
 #include "wifi_drv.h"
-#include "WifiSocketBuffer_h"
+#include "WifiSocketBuffer.h"
 
 #include "WiFi.h"
 #include "WiFiClient.h"
 
 #include "FreeRTOS.h"
-#include "tasks.h"
+#include "task.h"
 
 static int WiFiClient_connectCommon(uint8 _sock);
 

@@ -239,19 +239,19 @@ uint8 *WiFiDrv_getMacAddress(void) {
 }
 
 int WiFiDrv_getIpAddress(uint32 *ip) {
-    int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
+    int retVal = WiFiDrv_getNetworkData(&WiFiDrv__localIp, &WiFiDrv__subnetMask, &WiFiDrv__gatewayIp);
     *ip = WiFiDrv__localIp;
     return retVal;
 }
 
 int WiFiDrv_getSubnetMask(uint32 *mask) {
-    int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
+    int retVal = WiFiDrv_getNetworkData(&WiFiDrv__localIp, &WiFiDrv__subnetMask, &WiFiDrv__gatewayIp);
     *mask = WiFiDrv__subnetMask;
     return retVal;
 }
 
 int WiFiDrv_getGatewayIP(uint32 *ip) {
-    int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
+    int retVal = WiFiDrv_getNetworkData(&WiFiDrv__localIp, &WiFiDrv__subnetMask, &WiFiDrv__gatewayIp);
     *ip = WiFiDrv__gatewayIp;
     return retVal;
 }
@@ -361,7 +361,7 @@ uint8 *WiFiDrv_getSSIDNetworks(uint8 networkItem) {
     if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
         return (uint8 *) NULL;
 
-    return &WiFiDrv__networkSsid[networkItem];
+    return WiFiDrv__networkSsid[networkItem];
 }
 
 int WiFiDrv_getEncTypeNetworks(uint8 networkItem) {
@@ -580,7 +580,7 @@ int WiFiDrv_debug(uint8 on) {
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(SET_DEBUG_CMD, 24, &paramsRead, outParams, 1);
-    return data;
+    return _data;
 }
 
 int16 WiFiDrv_getTemperature(void) {

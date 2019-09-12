@@ -27,7 +27,7 @@
 #include "wl_types.h"
 
 #include "FreeRTOS.h"
-#include "tasks.h"
+#include "task.h"
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue) {
     WiFiDrv_pinMode(25, 1);  // OUTPUT
