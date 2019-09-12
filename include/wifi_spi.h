@@ -21,8 +21,8 @@
 #ifndef WiFi_Spi_h
 #define WiFi_Spi_h
 
-#include <inttypes.h>
-#include "utility/wl_definitions.h"
+#include "project.h"
+#include "wl_definitions.h"
 
 #define CMD_FLAG        0
 #define REPLY_FLAG      1<<7
@@ -123,35 +123,35 @@ enum wl_tcp_state {
 
 typedef struct __attribute__((__packed__)) {
     uint8 paramLen;
-    char *param;
+    uint8 *param;
 } tParam;
 
 typedef struct __attribute__((__packed__)) {
     uint16 dataLen;
-    char *data;
+    uint8 *data;
 } tDataParam;
 
 
 typedef struct __attribute__((__packed__)) {
-    unsigned char cmd;
-    unsigned char tcmd;
-    unsigned char nParam;
+    uint8 cmd;
+    uint8 tcmd;
+    uint8 nParam;
     tParam params[MAX_PARAMS];
 } tSpiMsg;
 
 typedef struct __attribute__((__packed__)) {
-    unsigned char cmd;
-    unsigned char tcmd;
-    unsigned char nParam;
+    uint8 cmd;
+    uint8 tcmd;
+    uint8 nParam;
     tDataParam params[MAX_PARAMS];
 } tSpiMsgData;
 
 
 typedef struct __attribute__((__packed__)) {
-    unsigned char cmd;
-    unsigned char tcmd;
-    //unsigned char	totLen;
-    unsigned char nParam;
+    uint8 cmd;
+    uint8 tcmd;
+    //uint8	totLen;
+    uint8 nParam;
 } tSpiHdr;
 
 typedef struct __attribute__((__packed__)) {
