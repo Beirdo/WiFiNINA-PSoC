@@ -45,7 +45,7 @@ int ServerDrv_getServerState(uint8 sock);
 
 int ServerDrv_getClientState(uint8 sock);
 
-int ServerDrv_getData(uint8 sock, uint8 *data, uint8 peek = 0);
+int ServerDrv_getData(uint8 sock, uint8 *data, uint8 peek);
 
 int ServerDrv_getDataBuf(uint8 sock, uint8 *data, uint16 *len);
 
