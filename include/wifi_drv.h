@@ -214,7 +214,7 @@ int32 WiFiDrv_getRSSINetworks(uint8 networkItem);
  */
 int WiFiDrv_getEncTypeNetworks(uint8 networkItem);
 
-uint8 *WiFiDrv_getBSSIDNetoworks(uint8 networkItem, uint8 *bssid);
+uint8 *WiFiDrv_getBSSIDNetworks(uint8 networkItem, uint8 *bssid);
 
 int WiFiDrv_getChannelNetworks(uint8 networkItem);
 

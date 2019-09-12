@@ -251,9 +251,9 @@ void WiFi_lowPowerMode();
 
 void WiFi_noLowPowerMode();
 
-int WiFi_ping_hostname(uint8 *hostname, uint8 ttl);
+int WiFi_ping_hostname(uint8 *hostname, int ttl);
 
-int WiFi_ping_ipaddress(uint32 host, uint8 ttl);
+int WiFi_ping_ipaddress(uint32 host, int ttl);
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue);
 

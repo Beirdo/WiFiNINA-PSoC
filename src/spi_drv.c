@@ -287,7 +287,7 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
 
     // Unfortunately, to receive, we must transmit.  Transmit all zeros.
     memset(txBuffer, 0, maxSize);
-    SPIM_WIFI_PutArray(txBuffer, j);
+    SPIM_WIFI_PutArray(txBuffer, maxSize);
     xSemaphoreTake(spiTxCompleted, portMAX_DELAY);
     SpiDrv_spiSlaveDeselect();
 

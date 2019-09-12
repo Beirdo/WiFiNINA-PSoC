@@ -23,12 +23,10 @@
 #include "wifi_drv.h"
 #include "WiFi.h"
 
-extern SPIClass *WIFININA_SPIWIFI;
-extern int8 WIFININA_SLAVESELECT, WIFININA_SLAVEREADY, WIFININA_SLAVERESET, WIFININA_SLAVEGPIO0;
-
 #include "wl_definitions.h"
 #include "wl_types.h"
 
+#define ustrlen(x)  (strlen((char*)(x)))
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue) {
     WiFiDrv_pinMode(25, OUTPUT);
@@ -61,7 +59,7 @@ int WiFi_begin_common(void) {
 }
 
 int WiFi_begin_open(uint8 *ssid) {
-    if (WiFiDrv_wifiSetNetwork(ssid, strlen(ssid)) == WL_FAILURE) {
+    if (WiFiDrv_wifiSetNetwork(ssid, ustrlen(ssid)) == WL_FAILURE) {
         return WL_CONNECT_FAILED;
     }
     return WiFi_begin_common();
@@ -69,16 +67,16 @@ int WiFi_begin_open(uint8 *ssid) {
 
 int WiFi_begin_WEP(uint8 *ssid, uint8 key_idx, uint8 *key) {
     // set encryption key
-    if (WiFiDrv_wifiSetKey(ssid, strlen(ssid), key_idx, key, strlen(key)) == WL_FAILURE) {
-        status = WL_CONNECT_FAILED;
+    if (WiFiDrv_wifiSetKey(ssid, ustrlen(ssid), key_idx, key, ustrlen(key)) == WL_FAILURE) {
+        return WL_CONNECT_FAILED;
     }
     return WiFi_begin_common();
 }
 
 int WiFi_begin(uint8 *ssid, uint8 *passphrase) {
     // set passphrase
-    if (WiFiDrv_wifiSetPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase)) == WL_FAILURE) {
-        status = WL_CONNECT_FAILED;
+    if (WiFiDrv_wifiSetPassphrase(ssid, ustrlen(ssid), passphrase, ustrlen(passphrase)) == WL_FAILURE) {
+        retrun WL_CONNECT_FAILED;
     }
     return WiFi_begin_common();
 }
@@ -99,7 +97,7 @@ uint8 WiFi_beginAP_ssid(uint8 *ssid) {
 }
 
 uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 channel) {
-    if (WiFiDrv_wifiSetApNetwork(ssid, strlen(ssid), channel) == WL_FAILURE) {
+    if (WiFiDrv_wifiSetApNetwork(ssid, ustrlen(ssid), channel) == WL_FAILURE) {
         return WL_AP_FAILED;
     }
     return WiFi_beginAP_common();
@@ -111,7 +109,7 @@ uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 *passphrase) {
 
 uint8 WiFi_beginAP_ssid_passphrase_channel(uint8 *ssid, uint8 *passphrase, uint8 channel) {
     // set passphrase
-    if (WiFiDrv_wifiSetApPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase), channel) == WL_FAILURE) {
+    if (WiFiDrv_wifiSetApPassphrase(ssid, ustrlen(ssid), passphrase, ustrlen(passphrase), channel) == WL_FAILURE) {
         return WL_AP_FAILED;
     }
     return WiFi_beginAP_common();
@@ -165,19 +163,19 @@ uint8 *WiFi_macAddress(uint8 *mac) {
 
 uint32 WiFi_localIP() {
     uint32 ret;
-    WiFiDrv_getIpAddress(ret);
+    WiFiDrv_getIpAddress(&ret);
     return ret;
 }
 
 uint32 WiFi_subnetMask() {
     uint32 ret;
-    WiFiDrv_getSubnetMask(ret);
+    WiFiDrv_getSubnetMask(&ret);
     return ret;
 }
 
 uint32 WiFi_gatewayIP() {
     uint32 ret;
-    WiFiDrv_getGatewayIP(ret);
+    WiFiDrv_getGatewayIP(&ret);
     return ret;
 }
 
@@ -258,7 +256,7 @@ void WiFi_noLowPowerMode() {
 int WiFi_ping_hostname(uint8 *hostname, int ttl) {
     uint32 ip;
 
-    if (!hostByName(hostname, ip)) {
+    if (!WiFi_hostByName(hostname, ip)) {
         return WL_PING_UNKNOWN_HOST;
     }
 
