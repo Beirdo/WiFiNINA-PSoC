@@ -26,12 +26,13 @@
 #include "wl_definitions.h"
 #include "wl_types.h"
 
-#define ustrlen(x)  (strlen((char*)(x)))
+#include "FreeRTOS.h"
+#include "tasks.h"
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue) {
-    WiFiDrv_pinMode(25, OUTPUT);
-    WiFiDrv_pinMode(26, OUTPUT);
-    WiFiDrv_pinMode(27, OUTPUT);
+    WiFiDrv_pinMode(25, 1);  // OUTPUT
+    WiFiDrv_pinMode(26, 1);
+    WiFiDrv_pinMode(27, 1);
     WiFiDrv_analogWrite(25, red);
     WiFiDrv_analogWrite(26, green);
     WiFiDrv_analogWrite(27, blue);
@@ -50,7 +51,7 @@ int WiFi_begin_common(void) {
     uint8 attempts = WL_MAX_ATTEMPT_CONNECTION;
 
     do {
-        delay(WL_DELAY_START_CONNECTION);
+        vTaskDelay(pdMS_TO_TICKS(WL_DELAY_START_CONNECTION));
         status = WiFiDrv_getConnectionStatus();
     } while (((status == WL_IDLE_STATUS) || (status == WL_NO_SSID_AVAIL) || (status == WL_SCAN_COMPLETED)) &&
              (--attempts > 0));
@@ -76,7 +77,7 @@ int WiFi_begin_WEP(uint8 *ssid, uint8 key_idx, uint8 *key) {
 int WiFi_begin(uint8 *ssid, uint8 *passphrase) {
     // set passphrase
     if (WiFiDrv_wifiSetPassphrase(ssid, ustrlen(ssid), passphrase, ustrlen(passphrase)) == WL_FAILURE) {
-        retrun WL_CONNECT_FAILED;
+        return WL_CONNECT_FAILED;
     }
     return WiFi_begin_common();
 }
@@ -256,7 +257,7 @@ void WiFi_noLowPowerMode() {
 int WiFi_ping_hostname(uint8 *hostname, int ttl) {
     uint32 ip;
 
-    if (!WiFi_hostByName(hostname, ip)) {
+    if (!WiFi_hostByName(hostname, &ip)) {
         return WL_PING_UNKNOWN_HOST;
     }
 

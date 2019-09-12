@@ -32,9 +32,9 @@ uint8 WiFiDrv__networkSsid[WL_NETWORKS_LIST_MAXNUM][WL_SSID_MAX_LENGTH];
 uint8 WiFiDrv__ssid[WL_SSID_MAX_LENGTH] = {0};
 uint8 WiFiDrv__bssid[WL_MAC_ADDR_LENGTH] = {0};
 uint8 WiFiDrv__mac[WL_MAC_ADDR_LENGTH] = {0};
-uint8 WiFiDrv__localIp[WL_IPV4_LENGTH] = {0};
-uint8 WiFiDrv__subnetMask[WL_IPV4_LENGTH] = {0};
-uint8 WiFiDrv__gatewayIp[WL_IPV4_LENGTH] = {0};
+uint32 WiFiDrv__localIp = 0;
+uint32 WiFiDrv__subnetMask = 0;
+uint32 WiFiDrv__gatewayIp = 0;
 
 // Firmware version
 uint8 WiFiDrv_fwVersion[WL_FW_VER_LENGTH] = {0};
@@ -53,7 +53,7 @@ static int WiFiDrv_getHostByNameResults(uint32 *aResult);
 // Private Methods
 static int WiFiDrv_getNetworkData(uint8 *ip, uint8 *mask, uint8 *gwip) {
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{sizeof(_dummy), &dummy}};
+    tParam inParams[] = {{sizeof(_dummy), &_dummy}};
     tParam outParams[] = {{4, ip},
                           {4, mask},
                           {4, gwip}};
@@ -181,7 +181,7 @@ int WiFiDrv_setDNS(uint8 validParams, uint32 dns_server1, uint32 dns_server2) {
 
 int WiFiDrv_setHostname(uint8 *hostname) {
     uint8 _data = 0;
-    tParam inParams[] = {{strlen(hostname), hostname}};
+    tParam inParams[] = {{ustrlen(hostname), hostname}};
     tParam outParams[] = {{1, &_data}};
     uint8 paramsRead;
 
@@ -198,7 +198,7 @@ int WiFiDrv_setHostname(uint8 *hostname) {
 int WiFiDrv_disconnect(void) {
     uint8 _data = 0;
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{1, &_data}};
     uint8 paramsRead;
 
@@ -226,7 +226,7 @@ int WiFiDrv_getConnectionStatus(void) {
 
 uint8 *WiFiDrv_getMacAddress(void) {
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{WL_MAC_ADDR_LENGTH, WiFiDrv__mac}};
     uint8 paramsRead;
 
@@ -252,20 +252,20 @@ int WiFiDrv_getSubnetMask(uint32 *mask) {
 
 int WiFiDrv_getGatewayIP(uint32 *ip) {
     int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
-    *ip = _WiFiDrv__gatewayIp;
+    *ip = WiFiDrv__gatewayIp;
     return retVal;
 }
 
 uint8 *WiFiDrv_getCurrentSSID(void) {
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{WL_SSID_MAX_LENGTH, WiFiDrv__ssid}};
     uint8 paramsRead;
 
     // Send Command
     SpiDrv_sendCmd(GET_CURR_SSID_CMD, 1, inParams);
 
-    memset(WiFiDrv_ssid, 0x00, WL_SSID_MAX_LENGTH);
+    memset(WiFiDrv__ssid, 0x00, WL_SSID_MAX_LENGTH);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(GET_CURR_SSID_CMD, 48, &paramsRead, outParams, 1);
@@ -274,7 +274,7 @@ uint8 *WiFiDrv_getCurrentSSID(void) {
 
 uint8 *WiFiDrv_getCurrentBSSID(void) {
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{WL_MAC_ADDR_LENGTH, WiFiDrv__bssid}};
     uint8 paramsRead;
 
@@ -289,7 +289,7 @@ uint8 *WiFiDrv_getCurrentBSSID(void) {
 int32 WiFiDrv_getCurrentRSSI(void) {
     uint8 _dummy = DUMMY_DATA;
     int32 rssi;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{4, &rssi}};
     uint8 paramsRead;
 
@@ -304,7 +304,7 @@ int32 WiFiDrv_getCurrentRSSI(void) {
 int WiFiDrv_getCurrentEncryptionType(void) {
     uint8 encType = 0;
     uint8 _dummy = DUMMY_DATA;
-    tParam inParams[] = {{1, _dummy}};
+    tParam inParams[] = {{1, &_dummy}};
     tParam outParams[] = {{1, &encType}};
     uint8 paramsRead;
 
@@ -353,7 +353,7 @@ int WiFiDrv_getScanNetworks(void) {
     }
 
     // Wait for reply
-    SpiDrv_receiveResponseCmd(SCAN_NETWORKS, WIFI_SOCKET_BUFFER_SIZE, &paramsRead, outParams, WL_NETWORKS_LIST_MAXNUM));
+    SpiDrv_receiveResponseCmd(SCAN_NETWORKS, WIFI_SOCKET_BUFFER_SIZE, &paramsRead, outParams, WL_NETWORKS_LIST_MAXNUM);
     return paramsRead;
 }
 
@@ -361,7 +361,7 @@ uint8 *WiFiDrv_getSSIDNetworks(uint8 networkItem) {
     if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
         return (uint8 *) NULL;
 
-    return _networkSsid[networkItem];
+    return &WiFiDrv__networkSsid[networkItem];
 }
 
 int WiFiDrv_getEncTypeNetworks(uint8 networkItem) {
@@ -382,7 +382,6 @@ int WiFiDrv_getEncTypeNetworks(uint8 networkItem) {
 }
 
 uint8 *WiFiDrv_getBSSIDNetworks(uint8 networkItem, uint8 *bssid) {
-    uint8 _dummy = DUMMY_DATA;
     tParam inParams[] = {{1, &networkItem}};
     tParam outParams[] = {{WL_MAC_ADDR_LENGTH, bssid}};
     uint8 paramsRead;
@@ -435,7 +434,7 @@ int32 WiFiDrv_getRSSINetworks(uint8 networkItem) {
 static int WiFiDrv_reqHostByName(uint8 *aHostname) {
     uint8 _data = 0;
     uint8 result;
-    tParam inParams[] = {{strlen(aHostname), aHostname}};
+    tParam inParams[] = {{ustrlen(aHostname), aHostname}};
     tParam outParams[] = {{1, &_data}};
     uint8 paramsRead;
 
@@ -453,7 +452,7 @@ static int WiFiDrv_reqHostByName(uint8 *aHostname) {
 }
 
 static int WiFiDrv_getHostByNameResults(uint32 *aResult) {
-    uint8 _ipAddr[WL_IPV4_LENGTH];
+    uint32 _ipAddr;
     uint32 dummy = 0xFFFFFFFF;
     int result = 0;
     tParam inParams[] = {};
@@ -467,7 +466,7 @@ static int WiFiDrv_getHostByNameResults(uint32 *aResult) {
     result = SpiDrv_receiveResponseCmd(GET_HOST_BY_NAME_CMD, 32, &paramsRead, outParams, 1);
     if (result) {
         *aResult = _ipAddr;
-        result = (*(uint32 *) _ipAddr != dummy);
+        result = (_ipAddr != dummy);
     }
     return result;
 }
@@ -508,7 +507,7 @@ uint32 WiFiDrv_getTime(void) {
 }
 
 int WiFiDrv_setPowerMode(uint8 mode) {
-    uint8 data = 0;
+    uint8 _data = 0;
     tParam inParams[] = {{1, &mode}};
     tParam outParams[] = {{4, &_data}};
     uint8 paramsRead;
@@ -522,7 +521,7 @@ int WiFiDrv_setPowerMode(uint8 mode) {
 
 int WiFiDrv_wifiSetApNetwork(uint8 *ssid, uint8 ssid_len, uint8 channel) {
     uint8 _data = 0;
-    tParam inParams[] = {{len, ssid}, {1, &channel}};
+    tParam inParams[] = {{ssid_len, ssid}, {1, &channel}};
     tParam outParams[] = {{4, &_data}};
     uint8 paramsRead;
 
@@ -530,7 +529,6 @@ int WiFiDrv_wifiSetApNetwork(uint8 *ssid, uint8 ssid_len, uint8 channel) {
     SpiDrv_sendCmd(SET_AP_NET_CMD, 2, inParams);
 
     // Wait for reply
-    uint8 _dataLen = 0;
     if (!SpiDrv_receiveResponseCmd(SET_AP_NET_CMD, 20, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
@@ -572,7 +570,7 @@ int16 WiFiDrv_ping(uint32 ipAddress, uint8 ttl) {
 }
 
 int WiFiDrv_debug(uint8 on) {
-    uint8 data = 0;
+    uint8 _data = 0;
     tParam inParams[] = {{1, &on}};
     tParam outParams[] = {{2, &_data}};
     uint8 paramsRead;

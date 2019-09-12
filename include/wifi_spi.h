@@ -117,7 +117,6 @@ enum wl_tcp_state {
     TIME_WAIT = 10
 };
 
-
 #define MAX_PARAMS 5
 #define PARAM_LEN_SIZE 1
 

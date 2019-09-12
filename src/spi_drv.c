@@ -228,7 +228,7 @@ int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead,
         param->dataLen = len;
     }
 
-    return readAndCheckChar(END_CMD, &_data);
+    return SpiDrv_readAndCheckChar(END_CMD, &_data);
 }
 
 /* Cmd Struct Message */

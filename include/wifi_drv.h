@@ -32,6 +32,8 @@
 // firmware version string length
 #define WL_FW_VER_LENGTH 6
 
+#define ustrlen(x)  (strlen((char*)(x)))
+
 /*
  * Driver initialization
  */
