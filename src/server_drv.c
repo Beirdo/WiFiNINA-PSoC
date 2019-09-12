@@ -41,7 +41,7 @@ int ServerDrv_startServer(uint16 port, uint8 sock, uint8 protMode) {
     SpiDrv_sendCmd(START_SERVER_TCP_CMD, 3, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -60,7 +60,7 @@ int ServerDrv_startServerIpAddress(uint32 ipAddress, uint16 port, uint8 sock, ui
     SpiDrv_sendCmd(START_SERVER_TCP_CMD, 4, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -80,7 +80,7 @@ int ServerDrv_startClient(uint32 ipAddress, uint16 port, uint8 sock, uint8 protM
     SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 4, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -100,7 +100,7 @@ int ServerDrv_startClientHostname(uint8 *host, uint8 host_len, uint32 ipAddress,
     SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 5, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -117,7 +117,7 @@ int ServerDrv_stopClient(uint8 sock) {
     SpiDrv_sendCmd(STOP_CLIENT_TCP_CMD, 1, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(STOP_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(STOP_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -134,7 +134,7 @@ int ServerDrv_getServerState(uint8 sock) {
     SpiDrv_sendCmd(GET_STATE_TCP_CMD, 1, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(GET_STATE_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(GET_STATE_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -150,7 +150,7 @@ int ServerDrv_getClientState(uint8 sock) {
     SpiDrv_sendCmd(GET_CLIENT_STATE_TCP_CMD, 1, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(GET_CLIENT_STATE_TCP_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(GET_CLIENT_STATE_TCP_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;

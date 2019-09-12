@@ -101,7 +101,7 @@ int WiFiDrv_wifiSetNetwork(uint8 *ssid, uint8 ssid_len) {
     SpiDrv_sendCmd(SET_NET_CMD, 1, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(SET_NET_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_NET_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
 
@@ -117,7 +117,7 @@ int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, co
 
     // Send Command
     SpiDrv_sendCmd(SET_PASSPHRASE_CMD, 2, inParams);
-    if (!SpiDrv_receiveResponseCmd(SET_PASSPHRASE_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_PASSPHRASE_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -136,7 +136,7 @@ int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, c
     SpiDrv_sendCmd(SET_KEY_CMD, 3, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(SET_KEY_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_KEY_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -155,7 +155,7 @@ int WiFiDrv_config(uint8 validParams, uint32 local_ip, uint32 gateway, uint32 su
     SpiDrv_sendCmd(SET_IP_CONFIG_CMD, 4, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(SET_IP_CONFIG_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_IP_CONFIG_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -173,7 +173,7 @@ int WiFiDrv_setDNS(uint8 validParams, uint32 dns_server1, uint32 dns_server2) {
     SpiDrv_sendCmd(SET_DNS_CONFIG_CMD, 3, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(SET_DNS_CONFIG_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_DNS_CONFIG_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
@@ -189,7 +189,7 @@ int WiFiDrv_setHostname(uint8 *hostname) {
     SpiDrv_sendCmd(SET_HOSTNAME_CMD, 1, inParams);
 
     // Wait for reply
-    if (!SpiDrv_receiveResponseCmd(SET_HOSTNAME_CMD, 16, &paramsRead, outParams, 1) {
+    if (!SpiDrv_receiveResponseCmd(SET_HOSTNAME_CMD, 16, &paramsRead, outParams, 1)) {
         return WL_FAILURE;
     }
     return _data;
