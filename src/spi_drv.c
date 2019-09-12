@@ -296,7 +296,7 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
         return 0;
     }
 
-    if (!readAndCheckChar(cmd | REPLY_FLAG, &_data)) {
+    if (!SpiDrv_readAndCheckChar(cmd | REPLY_FLAG, &_data)) {
         return 0;
     }
 
@@ -327,5 +327,5 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
         param->paramLen = len;
     }
 
-    return readAndCheckChar(END_CMD, &_data);
+    return SpiDrv_readAndCheckChar(END_CMD, &_data);
 }
