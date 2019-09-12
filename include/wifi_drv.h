@@ -25,8 +25,6 @@
 #include "project.h"
 #include "wifi_spi.h"
 #include "IPAddress.h"
-#include "WiFiUdp.h"
-#include "WiFiClient.h"
 
 // Key index length
 #define KEY_IDX_LEN     1

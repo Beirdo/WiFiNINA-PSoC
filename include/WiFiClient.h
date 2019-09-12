@@ -1,5 +1,6 @@
 /*
-  WiFiClient.cpp - Library for Arduino Wifi shield.
+  WiFiClient.cpp - Library for Arduino Wifi shield ported to C.
+  Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
   Copyright (c) 2018 Arduino SA. All rights reserved.
   Copyright (c) 2011-2014 Arduino LLC.  All right reserved.
 
@@ -20,45 +21,40 @@
 
 #ifndef wificlient_h
 #define wificlient_h
-#include "Arduino.h"	
-#include "Print.h"
-#include "Client.h"
+
+#include "project.h"
 #include "IPAddress.h"
 
-class WiFiClient : public Client {
+uint8 WiFiClient_status();
 
-public:
-  WiFiClient();
-  WiFiClient(uint8_t sock);
+int WiFiClient_connectHostname(uint32 ip, uint16 port);
 
-  uint8_t status();
-  virtual int connect(IPAddress ip, uint16_t port);
-  virtual int connect(const char *host, uint16_t port);
-  virtual int connectSSL(IPAddress ip, uint16_t port);
-  virtual int connectSSL(const char *host, uint16_t port);
-  virtual size_t write(uint8_t);
-  virtual size_t write(const uint8_t *buf, size_t size);
-  virtual int available();
-  virtual int read();
-  virtual int read(uint8_t *buf, size_t size);
-  virtual int peek();
-  virtual void flush();
-  virtual void stop();
-  virtual uint8_t connected();
-  virtual operator bool();
+int WiFiClient_connect(const char *host, uint16 port);
 
-  virtual IPAddress remoteIP();
-  virtual uint16_t remotePort();
+int WiFiClient_connectSSL(uint32 ip, uint16 port);
 
-  friend class WiFiServer;
-  friend class WiFiDrv;
+int WiFiClient_connectSSLHostname(const char *host, uint16 port);
 
-  using Print::write;
+int WiFiClient_writeChar(uint8 _sock, uint8 ch);
 
-private:
-  static uint16_t _srcport;
-  uint8_t _sock;   //not used
-  uint16_t  _socket;
-};
+int WiFiClient_write(uint8 _sock, uint8 *buf, size_t size);
+
+int WiFiClient_available(uint8 _sock);
+
+int WiFiClient_readChar(uint8 _sock);
+
+int WiFiClient_read(uint8 _sock, uint8 *buf, size_t size);
+
+int WiFiClient_peek(uint8 _sock);
+
+void WiFiClient_flush(uint8 _sock);
+
+void WiFiClient_stop(uint8 _sock);
+
+int WiFiClient_connected(uint8 _sock);
+
+uint32 WiFiClient_remoteIP(uint8 _sock);
+
+uint16 WiFiClient_remotePort(uint8 _sock);
 
 #endif
