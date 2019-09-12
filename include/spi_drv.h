@@ -49,10 +49,10 @@ void SpiDrv_waitForSlaveReadyTimeout(TickType_t timeout);
 
 void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params);
 
-int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParams *params, uint8 maxNumParams);
+int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParam *params, uint8 maxNumParams);
 
 void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params);
 
-int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParams *params, uint8 maxNumParams);
+int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParam *params, uint8 maxNumParams);
 
 #endif

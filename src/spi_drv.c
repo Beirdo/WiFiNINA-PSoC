@@ -171,7 +171,7 @@ void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params) {
     SpiDrv_spiSlaveDeselect();
 }
 
-int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParams *params, uint8 maxNumParams) {
+int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParam *params, uint8 maxNumParams) {
     uint8 _data = 0;
 
     if (maxSize > SPI_MAX_RX_BUFFER) {
@@ -271,7 +271,7 @@ void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params) {
     SpiDrv_spiSlaveDeselect();
 }
 
-int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParams *params, uint8 maxNumParams) {
+int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParam *params, uint8 maxNumParams) {
     uint8 _data = 0;
 
     if (maxSize > SPI_MAX_RX_BUFFER) {
