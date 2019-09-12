@@ -26,11 +26,7 @@
 
 #define WIFI_SOCKET_NUM_BUFFERS (sizeof(_buffers) / sizeof(_buffers[0]))
 
-#ifdef __AVR__
-#define WIFI_SOCKET_BUFFER_SIZE 64
-#else
-#define WIFI_SOCKET_BUFFER_SIZE 1500
-#endif
+
 
 WiFiSocketBufferClass::WiFiSocketBufferClass()
 {

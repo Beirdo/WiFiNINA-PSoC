@@ -39,6 +39,7 @@ static uint8 txBuffer[SPI_MAX_TX_BUFFER];
 
 
 static int SpiDrv_waitSpiChar(uint8 waitChar);
+
 static int SpiDrv_readAndCheckChar(uint8 checkChar, uint8 *readChar);
 
 // PSoC interrupt on falling edge of ESPBUSY - triggers a FreeRTOS semaphore
@@ -127,7 +128,7 @@ void SpiDrv_waitForSlaveReady() {
     SpiDrv_waitForSlaveReadyTimeout(pdMAX_DELAY);
 
     // Shouldn't happen
-    while(ESPBUSY_Read()) {};
+    while (ESPBUSY_Read()) {};
 }
 
 void SpiDrv_waitForSlaveReadyTimeout(TickType_t timeout) {

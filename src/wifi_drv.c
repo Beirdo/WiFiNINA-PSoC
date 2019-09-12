@@ -45,7 +45,7 @@ char WiFiDrv_fwVersion[WL_FW_VER_LENGTH] = {0};
  */
 static int WiFiDrv_getNetworkData(uint8 *ip, uint8 *mask, uint8 *gwip);
 
-static int WiFiDrv_reqHostByName(const char *aHostname);
+static int WiFiDrv_reqHostByName(uint8 *aHostname);
 
 static int WiFiDrv_getHostByNameResults(IPAddress *aResult);
 
@@ -91,7 +91,7 @@ void WiFiDrv_wifiDriverDeinit(void) {
     SpiDrv_end();
 }
 
-int WiFiDrv_wifiSetNetwork(const char *ssid, uint8 ssid_len) {
+int WiFiDrv_wifiSetNetwork(uint8 *ssid, uint8 ssid_len) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len, ssid}};
     tParam outParams[] = {{1, &_data}};
@@ -108,7 +108,7 @@ int WiFiDrv_wifiSetNetwork(const char *ssid, uint8 ssid_len) {
     return (_data == WIFI_SPI_ACK) ? WL_SUCCESS : WL_FAILURE;
 }
 
-int WiFiDrv_wifiSetPassphrase(const char *ssid, uint8 ssid_len, const char *passphrase, const uint8 len) {
+int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, const uint8 len) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len, ssid},
                          {len,      passphrase}};
@@ -124,7 +124,7 @@ int WiFiDrv_wifiSetPassphrase(const char *ssid, uint8 ssid_len, const char *pass
 }
 
 
-int WiFiDrv_wifiSetKey(const char *ssid, uint8 ssid_len, uint8 key_idx, const void *key, const uint8 len) {
+int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, const uint8 len) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len,    ssid},
                          {KEY_IDX_LEN, &key_idx},
@@ -179,7 +179,7 @@ int WiFiDrv_setDNS(uint8 validParams, uint32 dns_server1, uint32 dns_server2) {
     return _data;
 }
 
-int WiFiDrv_setHostname(const char *hostname) {
+int WiFiDrv_setHostname(uint8 *hostname) {
     uint8 _data = 0;
     tParam inParams[] = {{strlen(hostname), hostname}};
     tParam outParams[] = {{1, &_data}};
@@ -353,7 +353,7 @@ int WiFiDrv_getScanNetworks(void) {
     }
 
     // Wait for reply
-    SpiDrv_receiveResponseCmd(SCAN_NETWORKS, 255, &paramsRead, outParams, WL_NETWORKS_LIST_MAXNUM));
+    SpiDrv_receiveResponseCmd(SCAN_NETWORKS, WIFI_SOCKET_BUFFER_SIZE, &paramsRead, outParams, WL_NETWORKS_LIST_MAXNUM));
     return paramsRead;
 }
 
@@ -432,7 +432,7 @@ int32 WiFiDrv_getRSSINetworks(uint8 networkItem) {
     return rssi;
 }
 
-static int WiFiDrv_reqHostByName(const char *aHostname) {
+static int WiFiDrv_reqHostByName(uint8 *aHostname) {
     uint8 _data = 0;
     uint8 result;
     tParam inParams[] = {{strlen(aHostname), aHostname}};
@@ -472,7 +472,7 @@ static int WiFiDrv_getHostByNameResults(IPAddress *aResult) {
     return result;
 }
 
-int WiFiDrv_getHostByName(const char *aHostname, IPAddress *aResult) {
+int WiFiDrv_getHostByName(uint8 *aHostname, IPAddress *aResult) {
     if (WiFiDrv_reqHostByName(aHostname)) {
         return WiFiDrv_getHostByNameResults(aResult);
     } else {
@@ -520,7 +520,7 @@ int WiFiDrv_setPowerMode(uint8 mode) {
     return SpiDrv_receiveResponseCmd(SET_POWER_MODE_CMD, 20, &paramsRead, outParams, 1);
 }
 
-int WiFiDrv_wifiSetApNetwork(const char *ssid, uint8 ssid_len, uint8 channel) {
+int WiFiDrv_wifiSetApNetwork(uint8 *ssid, uint8 ssid_len, uint8 channel) {
     uint8 _data = 0;
     tParam inParams[] = {{len, ssid}, {1, &channel}};
     tParam outParams[] = {{4, &_data}};
@@ -538,7 +538,7 @@ int WiFiDrv_wifiSetApNetwork(const char *ssid, uint8 ssid_len, uint8 channel) {
     return (_data == WIFI_SPI_ACK) ? WL_SUCCESS : WL_FAILURE;
 }
 
-int WiFiDrv_wifiSetApPassphrase(const char *ssid, uint8 ssid_len, const char *passphrase, const uint8 len, uint8 channel) {
+int WiFiDrv_wifiSetApPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, const uint8 len, uint8 channel) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len, ssid}, {len, passphrase}, {1, &channel}};
     tParam outParams[] = {{4, &_data}};

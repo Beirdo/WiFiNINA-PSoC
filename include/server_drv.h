@@ -1,5 +1,6 @@
 /*
-  server_drv.h - Library for Arduino Wifi shield.
+  server_drv.h - Library for Arduino Wifi shield ported to C.
+  Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
   Copyright (c) 2018 Arduino SA. All rights reserved.
   Copyright (c) 2011-2014 Arduino.  All right reserved.
 
@@ -21,50 +22,43 @@
 #ifndef Server_Drv_h
 #define Server_Drv_h
 
-#include <inttypes.h>
-#include "utility/wifi_spi.h"
-#include "debug.h"
+#include "project.h"
+#include "wifi_spi.h"
 
-typedef enum eProtMode {TCP_MODE, UDP_MODE, TLS_MODE, UDP_MULTICAST_MODE}tProtMode;
+typedef enum eProtMode {
+    TCP_MODE, UDP_MODE, TLS_MODE, UDP_MULTICAST_MODE
+} tProtMode;
 
-class ServerDrv
-{
-public:
+// Start server TCP on port specified
+int ServerDrv_startServer(uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
 
-    // Start server TCP on port specified
-    static void startServer(uint16_t port, uint8_t sock, uint8_t protMode=TCP_MODE);
+int ServerDrv_startServerIpAddress(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
 
-    static void startServer(uint32_t ipAddress, uint16_t port, uint8_t sock, uint8_t protMode=TCP_MODE);
+int ServerDrv_startClient(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
 
-    static void startClient(uint32_t ipAddress, uint16_t port, uint8_t sock, uint8_t protMode=TCP_MODE);
+int ServerDrv_startClientHostname(uint8 *host, uint8 host_len, uint32 ipAddress, uint16 port, uint8 sock,
+                                  uint8 protMode = TCP_MODE);
 
-    static void startClient(const char* host, uint8_t host_len, uint32_t ipAddress, uint16_t port, uint8_t sock, uint8_t protMode=TCP_MODE);
+int ServerDrv_stopClient(uint8 sock);
 
-    static void stopClient(uint8_t sock);
-                                                                                  
-    static uint8_t getServerState(uint8_t sock);
+int ServerDrv_getServerState(uint8 sock);
 
-    static uint8_t getClientState(uint8_t sock);
+int ServerDrv_getClientState(uint8 sock);
 
-    static bool getData(uint8_t sock, uint8_t *data, uint8_t peek = 0);
+int ServerDrv_getData(uint8 sock, uint8 *data, uint8 peek = 0);
 
-    static bool getDataBuf(uint8_t sock, uint8_t *data, uint16_t *len);
+int ServerDrv_getDataBuf(uint8 sock, uint8 *data, uint16 *len);
 
-    static bool insertDataBuf(uint8_t sock, const uint8_t *_data, uint16_t _dataLen);
+int ServerDrv_insertDataBuf(uint8 sock, const uint8 *_data, uint16 _dataLen);
 
-    static uint16_t sendData(uint8_t sock, const uint8_t *data, uint16_t len);
+int ServerDrv_sendData(uint8 sock, const uint8 *data, uint16 len);
 
-    static bool sendUdpData(uint8_t sock);
+int ServerDrv_sendUdpData(uint8 sock);
 
-    static uint16_t availData(uint8_t sock);
+int ServerDrv_availData(uint8 sock);
 
-    static uint8_t availServer(uint8_t sock);
+int ServerDrv_checkDataSent(uint8 sock);
 
-    static uint8_t checkDataSent(uint8_t sock);
-
-    static uint8_t getSocket();
-};
-
-extern ServerDrv serverDrv;
+int ServerDrv_getSocket();
 
 #endif

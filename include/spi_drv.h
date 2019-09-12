@@ -28,6 +28,9 @@
 
 #define DUMMY_DATA  0xFF
 
+// Due to RxBuffer size limitations in the SPIM module.  I can probably work out making this 1500 later.
+#define WIFI_SOCKET_BUFFER_SIZE 255
+
 void SpiDrv_begin(void);
 
 void SpiDrv_end(void);
