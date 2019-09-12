@@ -30,7 +30,6 @@
 #include "wl_types.h"
 #include "IPAddress.h"
 #include "WiFiClient.h"
-#include "WiFiSSLClient.h"
 #include "WiFiServer.h"
 
 void WiFi_init();

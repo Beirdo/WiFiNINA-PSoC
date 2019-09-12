@@ -31,11 +31,7 @@
 #include "FreeRTOS.h"
 #include "tasks.h"
 
-uint16 WiFiClient__srcport = 1024;
-uint8 WiFiClient__sock = 0;
-
 static int WiFiClient_connectCommon(uint8 _sock);
-
 
 int WiFiClient_connectHostname(uint8 *host, uint16 port) {
     IPAddress remote_addr;

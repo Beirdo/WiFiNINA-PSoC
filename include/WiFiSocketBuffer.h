@@ -1,5 +1,6 @@
 /*
-  This file is part of the WiFiNINA library.
+  This file is part of the WiFiNINA library ported to C.
+  Copyright (c) 2019 Gavin Hurlbut.  All rights reserved.
   Copyright (c) 2018 Arduino SA. All rights reserved.
 
   This library is free software; you can redistribute it and/or
@@ -20,35 +21,22 @@
 #ifndef WiFiSocketBuffer_h
 #define WiFiSocketBuffer_h
 
-#include <stddef.h>
-#include <stdint.h>
+#include "project.h"
+#include "wl_definitions.h"
 
-extern "C" {
-  #include "utility/wl_definitions.h"
-}
-
-class WiFiSocketBufferClass {
-
-public:
-  WiFiSocketBufferClass();
-  ~WiFiSocketBufferClass();
-
-  void close(int socket);
-
-  int available(int socket);
-  int peek(int socket);
-  int read(int socket, uint8_t* data, size_t length);
-
-private:
-  struct {
-    uint8_t* data;
-    uint8_t* head;
+typedef struct _WiFiSocketBuffer {
+    uint8* data;
+    uint8* head;
     int length;
-  } _buffers[WIFI_MAX_SOCK_NUM];
-};
+} WiFiSocketBuffer_t;
 
-extern WiFiSocketBufferClass WiFiSocketBuffer;
+void WiFiSocketBuffer_init(void);
+void WiFiSocketBuffer_deinit(void);
 
+void WiFiSocketBuffer_close(int socket);
 
+int WiFiSocketBuffer_available(int socket);
+int WiFiSocketBuffer_peek(int socket);
+int WiFiSocketBuffer_read(int socket, uint8* data, size_t length);
 
 #endif
