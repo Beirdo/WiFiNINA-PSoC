@@ -78,10 +78,6 @@ int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, co
  */
 int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, const uint8 len);
 
-int WiFiDrv_wifiSetApNetwork(uint8 *ssid, uint8 ssid_len);
-
-int WiFiDrv_wifiSetApPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, const uint8 len);
-
 /* Set ip configuration disabling dhcp client
     *
     * param validParams: set the number of parameters that we want to change

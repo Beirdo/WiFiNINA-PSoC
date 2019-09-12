@@ -34,7 +34,7 @@ BaseType_t spiTxPreempted;
 #define SPI_MAX_TX_BUFFER 255   // hope there are no responses or commands bigger.
 #define SPI_MAX_RX_BUFFER 255   // hope there are no responses or commands bigger.
 
-static bool SpiDrv_initialized = false;
+static int SpiDrv_initialized = 0;
 static uint8 txBuffer[SPI_MAX_TX_BUFFER];
 
 
@@ -64,21 +64,21 @@ void SPIM_WIFI_TX_ISR_ExitCallback(void) {
 void SpiDrv_begin(void) {
     slaveReadyDetected = xSemaphoreCreateBinary();
 
-    ESPRST_WRITE(1);
+    ESPRST_Write(1);
     vTaskDelay(pdMS_TO_TICKS(10));
     ESPRST_Write(0);
     vTaskDelay(pdMS_TO_TICKS(10));
-    ESPRST_WRITE(1);
+    ESPRST_Write(1);
     vTaskDelay(pdMS_TO_TICKS(750));
 
-    initialized = true;
+    SpiDrv_initialized = 1;
 }
 
 void SpiDrv_end(void) {
     ESPRST_Write(0);
-    WIFI_CS_OVERRIDE_write(0);
+    WIFI_CS_OVERRIDE_Write(0);
 
-    initialized = false;
+    SpiDrv_initialized = 0;
 }
 
 
@@ -125,7 +125,7 @@ uint8 SpiDrv_readChar() {
 }
 
 void SpiDrv_waitForSlaveReady() {
-    SpiDrv_waitForSlaveReadyTimeout(pdMAX_DELAY);
+    SpiDrv_waitForSlaveReadyTimeout(portMAX_DELAY);
 
     // Shouldn't happen
     while (ESPBUSY_Read()) {};
@@ -148,10 +148,10 @@ void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params) {
 
     for (i = 0, j = 3; i < numParam; i++) {
         tDataParam *param = &params[i];
-        uint16 len = param->paramLen;
+        uint16 len = param->dataLen;
         txBuffer[j++] = (len >> 8) & 0xFF;
         txBuffer[j++] = len & 0xFF;
-        memcpy(param->param, &txBuffer[j], len);
+        memcpy(&txBuffer[j], param->data, len);
         j += len;
     }
 
@@ -159,7 +159,7 @@ void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params) {
     while ((j & 3) != 3) {
         txBuffer[j++] = 0;
     }
-    txBuffer[j]++ = END_CMD;
+    txBuffer[j++] = END_CMD;
 
     // Make sure the TX and RX buffer are cleared
     SPIM_WIFI_ClearTxBuffer();
@@ -167,7 +167,7 @@ void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params) {
 
     SpiDrv_waitForSlaveSelect();
     SPIM_WIFI_PutArray(txBuffer, j);
-    xSemaphoreTake(spiTxCompleted, pdMAX_DELAY);
+    xSemaphoreTake(spiTxCompleted, portMAX_DELAY);
     SpiDrv_spiSlaveDeselect();
 }
 
@@ -187,8 +187,8 @@ int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead,
 
     // Unfortunately, to receive, we must transmit.  Transmit all zeros.
     memset(txBuffer, 0, maxSize);
-    SPIM_WIFI_PutArray(txBuffer, j);
-    xSemaphoreTake(spiTxCompleted, pdMAX_DELAY);
+    SPIM_WIFI_PutArray(txBuffer, maxSize);
+    xSemaphoreTake(spiTxCompleted, portMAX_DELAY);
     SpiDrv_spiSlaveDeselect();
 
     // The data will come into the rx buffer as we Tx, so let's pull from it.
@@ -196,7 +196,7 @@ int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead,
         return 0;
     }
 
-    if (!readAndCheckChar(cmd | REPLY_FLAG, &_data)) {
+    if (!SpiDrv_readAndCheckChar(cmd | REPLY_FLAG, &_data)) {
         return 0;
     }
 
@@ -211,8 +211,8 @@ int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead,
         return 0;
     }
 
-    for (i = 0; i < numParam; ++i) {
-        tDataParams *param = &params[i];
+    for (int i = 0; i < numParam; ++i) {
+        tDataParam *param = &params[i];
         uint8 *buf = param->data;
         uint16 len = ((SpiDrv_readChar() & 0xFF) << 8);
         len |= (SpiDrv_readChar() & 0xFF);
@@ -221,8 +221,8 @@ int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead,
             len = param->dataLen - 1;
         }
 
-        for (ii = 0; ii < len; ii++) {
-            *buf++ = SpiDrv_getChar();
+        for (int j = 0; j < len; j++) {
+            *buf++ = SpiDrv_readChar();
         }
         *buf = 0;
         param->dataLen = len;
@@ -250,8 +250,8 @@ void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params) {
     for (i = 0, j = 3; i < numParam; i++) {
         tParam *param = &params[i];
         uint8 len = param->paramLen;
-        txBuffer[j++] = lenen;
-        memcpy(param->param, &txBuffer[j], len);
+        txBuffer[j++] = len;
+        memcpy(&txBuffer[j], param->param, len);
         j += len;
     }
 
@@ -259,7 +259,7 @@ void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params) {
     while ((j & 3) != 3) {
         txBuffer[j++] = 0;
     }
-    txBuffer[j]++ = END_CMD;
+    txBuffer[j++] = END_CMD;
 
     // Make sure the TX and RX buffer are cleared
     SPIM_WIFI_ClearTxBuffer();
@@ -267,7 +267,7 @@ void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params) {
 
     SpiDrv_waitForSlaveSelect();
     SPIM_WIFI_PutArray(txBuffer, j);
-    xSemaphoreTake(spiTxCompleted, pdMAX_DELAY);
+    xSemaphoreTake(spiTxCompleted, portMAX_DELAY);
     SpiDrv_spiSlaveDeselect();
 }
 
@@ -288,7 +288,7 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
     // Unfortunately, to receive, we must transmit.  Transmit all zeros.
     memset(txBuffer, 0, maxSize);
     SPIM_WIFI_PutArray(txBuffer, j);
-    xSemaphoreTake(spiTxCompleted, pdMAX_DELAY);
+    xSemaphoreTake(spiTxCompleted, portMAX_DELAY);
     SpiDrv_spiSlaveDeselect();
 
     // The data will come into the rx buffer as we Tx, so let's pull from it.
@@ -311,8 +311,8 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
         return 0;
     }
 
-    for (i = 0; i < numParam; ++i) {
-        tParams *param = &params[i];
+    for (int i = 0; i < numParam; ++i) {
+        tParam *param = &params[i];
         uint8 *buf = param->param;
         uint8 len = SpiDrv_readChar();
 
@@ -320,8 +320,8 @@ int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tP
             len = param->paramLen - 1;
         }
 
-        for (ii = 0; ii < len; ii++) {
-            *buf++ = SpiDrv_getChar();
+        for (int j = 0; j < len; j++) {
+            *buf++ = SpiDrv_readChar();
         }
         *buf = 0;
         param->paramLen = len;
