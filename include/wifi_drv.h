@@ -41,7 +41,7 @@ void WiFiDrv_wifiDriverInit(void);
 
 void WiFiDrv_wifiDriverDeinit(void);
 
-int WiFiDrv_getRemoteData(uint8 sock, uint32 *ip, uint32 *port);
+int WiFiDrv_getRemoteData(uint8 sock, uint32 *ip, uint16 *port);
 
 /*
  * Set the desired network which the connection manager should try to
