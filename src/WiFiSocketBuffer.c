@@ -20,7 +20,10 @@
 
 #include "project.h"
 #include "server_drv.h"
+#include "spi_drv.h"
 #include "WiFiSocketBuffer.h"
+#include "FreeRTOS.h"
+#include <stdlib.h>
 
 static WiFiSocketBuffer_t _buffers[WIFI_MAX_SOCK_NUM];
 
@@ -65,7 +68,7 @@ int WiFiSocketBuffer_available(int socket) {
 }
 
 int WiFiSocketBuffer_peek(int socket) {
-    if (!available(socket)) {
+    if (!WiFiSocketBuffer_available(socket)) {
         return -1;
     }
 
@@ -73,7 +76,7 @@ int WiFiSocketBuffer_peek(int socket) {
 }
 
 int WiFiSocketBuffer_read(int socket, uint8 *data, size_t length) {
-    int avail = available(socket);
+    int avail = WiFiSocketBuffer_available(socket);
 
     if (!avail) {
         return 0;

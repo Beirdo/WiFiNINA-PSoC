@@ -120,7 +120,7 @@ int WiFiClient_readChar(uint8 _sock) {
     return ch;
 }
 
-int WiFiClient_read(uint8 *buf, size_t size) {
+int WiFiClient_read(uint8 _sock, uint8 *buf, size_t size) {
     return WiFiSocketBuffer_read(_sock, buf, size);
 }
 
@@ -172,7 +172,7 @@ int WiFiClient_connected(uint8 _sock) {
     return result;
 }
 
-uint8 WiFiClient_status(uint8 _sock) {
+int WiFiClient_status(uint8 _sock) {
     if (_sock == NO_SOCKET_AVAIL) {
         return CLOSED;
     }
@@ -183,14 +183,14 @@ uint32 WiFiClient_remoteIP(uint8 _sock) {
     uint32 _remoteIp = 0;
     uint16 _remotePort = 0;
 
-    WiFiDrv_getRemoteData(_sock, (uint8 *)&_remoteIp, (uint8)&_remotePort);
-    return ip;
+    WiFiDrv_getRemoteData(_sock, &_remoteIp, &_remotePort);
+    return _remoteIp;
 }
 
-uint16 WiFiClient_remotePort() {
+uint16 WiFiClient_remotePort(uint8 _sock) {
     uint32 _remoteIp = 0;
     uint16 _remotePort = 0;
 
-    WiFiDrv_getRemoteData(_sock, (uint8 *)&_remoteIp, (uint8)&_remotePort);
+    WiFiDrv_getRemoteData(_sock, &_remoteIp, &_remotePort);
     return _remotePort;
 }

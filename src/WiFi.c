@@ -208,7 +208,7 @@ int8 WiFi_scanNetworks() {
     }
 
     do {
-        delay(2000);
+        vTaskDelay(pdMS_TO_TICKS(2000));
         numOfNetworks = WiFiDrv_getScanNetworks();
     } while ((numOfNetworks == 0) && (--attempts > 0));
     return numOfNetworks;

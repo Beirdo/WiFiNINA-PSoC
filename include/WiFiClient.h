@@ -24,8 +24,6 @@
 
 #include "project.h"
 
-uint8 WiFiClient_status();
-
 int WiFiClient_connect(uint32 ip, uint16 port);
 
 int WiFiClient_connectHostname(uint8 *host, uint16 port);

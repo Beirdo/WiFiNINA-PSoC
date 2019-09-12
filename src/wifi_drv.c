@@ -66,7 +66,7 @@ static int WiFiDrv_getNetworkData(uint32 *ip, uint32 *mask, uint32 *gwip) {
     return SpiDrv_receiveResponseCmd(GET_IPADDR_CMD, 24, &paramsRead, outParams, 3);
 }
 
-int WiFiDrv_getRemoteData(uint8 sock, uint8 *ip, uint8 *port) {
+int WiFiDrv_getRemoteData(uint8 sock, uint32 *ip, uint16 *port) {
     tParam inParams[] = {{sizeof(sock), &sock}};
     tParam outParams[] = {{4, ip},
                           {2, port}};
