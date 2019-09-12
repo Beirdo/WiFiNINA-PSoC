@@ -123,12 +123,12 @@ enum wl_tcp_state {
 
 typedef struct __attribute__((__packed__)) {
     uint8 paramLen;
-    uint8 *param;
+    void *param;
 } tParam;
 
 typedef struct __attribute__((__packed__)) {
     uint16 dataLen;
-    uint8 *data;
+    void *data;
 } tDataParam;
 
 
