@@ -102,7 +102,7 @@ void SpiDrv_spiSlaveDeselect(void) {
 
 static int SpiDrv_waitSpiChar(uint8 waitChar) {
     int timeout = TIMEOUT_CHAR;
-    unsigned char _readChar = 0;
+    uint8 _readChar = 0;
     do {
         _readChar = SpiDrv_readChar(); //get data byte
         if (_readChar == ERR_CMD) {
@@ -172,7 +172,7 @@ void SpiDrv_sendBuffer(uint8 cmd, uint8 numParam, tDataParam *params) {
 }
 
 int SpiDrv_receiveResponseBuffer(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tDataParams *params, uint8 maxNumParams) {
-    char _data = 0;
+    uint8 _data = 0;
 
     if (maxSize > SPI_MAX_RX_BUFFER) {
         maxSize = SPI_MAX_RX_BUFFER;
@@ -272,7 +272,7 @@ void SpiDrv_sendCmd(uint8 cmd, uint8 numParam, tParam *params) {
 }
 
 int SpiDrv_receiveResponseCmd(uint8 cmd, uint16 maxSize, uint8 *numParamRead, tParams *params, uint8 maxNumParams) {
-    char _data = 0;
+    uint8 _data = 0;
 
     if (maxSize > SPI_MAX_RX_BUFFER) {
         maxSize = SPI_MAX_RX_BUFFER;

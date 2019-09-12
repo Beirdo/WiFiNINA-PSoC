@@ -28,11 +28,11 @@ uint8 WiFiClient_status();
 
 int WiFiClient_connectHostname(uint32 ip, uint16 port);
 
-int WiFiClient_connect(const char *host, uint16 port);
+int WiFiClient_connect(uint8 *host, uint16 port);
 
 int WiFiClient_connectSSL(uint32 ip, uint16 port);
 
-int WiFiClient_connectSSLHostname(const char *host, uint16 port);
+int WiFiClient_connectSSLHostname(uint8 *host, uint16 port);
 
 int WiFiClient_writeChar(uint8 _sock, uint8 ch);
 

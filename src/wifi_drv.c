@@ -37,7 +37,7 @@ uint8 WiFiDrv__subnetMask[WL_IPV4_LENGTH] = {0};
 uint8 WiFiDrv__gatewayIp[WL_IPV4_LENGTH] = {0};
 
 // Firmware version
-char WiFiDrv_fwVersion[WL_FW_VER_LENGTH] = {0};
+uint8 WiFiDrv_fwVersion[WL_FW_VER_LENGTH] = {0};
 
 
 /*
@@ -359,7 +359,7 @@ int WiFiDrv_getScanNetworks(void) {
 
 uint8 *WiFiDrv_getSSIDNetworks(uint8 networkItem) {
     if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
-        return (char *) NULL;
+        return (uint8 *) NULL;
 
     return _networkSsid[networkItem];
 }
