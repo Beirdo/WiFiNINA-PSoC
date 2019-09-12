@@ -23,7 +23,7 @@
 #include "wl_types.h"
 #include "server_drv.h"
 #include "wifi_drv.h"
-#include "WifiSocketBuffer.h"
+#include "WiFiSocketBuffer.h"
 
 #include "WiFi.h"
 #include "WiFiClient.h"
@@ -36,7 +36,7 @@ static int WiFiClient_connectCommon(uint8 _sock);
 int WiFiClient_connectHostname(uint8 *host, uint16 port) {
     uint32 remote_addr;
     if (WiFi_hostByName(host, &remote_addr)) {
-        return WiFiClient_connect(remote_addr, port, TCP_MODE);
+        return WiFiClient_connect(remote_addr, port);
     }
     return 0;
 }
@@ -47,7 +47,7 @@ int WiFiClient_connect(uint32 ip, uint16 port) {
         return _sock;
     }
 
-    ServerDrv_startClient(uint32(ip), port, _sock, TCP_MODE);
+    ServerDrv_startClient(ip, port, _sock, TCP_MODE);
     return WiFiClient_connectCommon(_sock);
 }
 
@@ -66,22 +66,22 @@ static int WiFiClient_connectCommon(uint8 _sock) {
 }
 
 int WiFiClient_connectSSL(uint32 ip, uint16 port) {
-    _sock = ServerDrv_getSocket();
+    uint8 _sock = ServerDrv_getSocket();
     if (_sock == NO_SOCKET_AVAIL) {
         return _sock;
     }
 
-    ServerDrv_startClient(uint32(ip), port, _sock, TLS_MODE);
+    ServerDrv_startClient(ip, port, _sock, TLS_MODE);
     return WiFiClient_connectCommon(_sock);
 }
 
 int WiFiClient_connectSSLHostname(uint8 *host, uint16 port) {
-    _sock = ServerDrv_getSocket();
+    uint8 _sock = ServerDrv_getSocket();
     if (_sock == NO_SOCKET_AVAIL) {
         return _sock;
     }
 
-    ServerDrv_startClientHostname(host, strlen(host), uint32(0), port, _sock, TLS_MODE);
+    ServerDrv_startClientHostname(host, ustrlen(host), 0, port, _sock, TLS_MODE);
     return WiFiClient_connectCommon(_sock);
 }
 
@@ -91,13 +91,11 @@ int WiFiClient_writeChar(uint8 _sock, uint8 ch) {
 
 int WiFiClient_write(uint8 _sock, uint8 *buf, size_t size) {
     if (_sock == NO_SOCKET_AVAIL || size == 0) {
-        setWriteError();
         return 0;
     }
 
     int written = ServerDrv_sendData(_sock, buf, size);
     if (!written || !ServerDrv_checkDataSent(_sock)) {
-        setWriteError();
         return 0;
     }
 
@@ -109,21 +107,21 @@ int WiFiClient_available(uint8 _sock) {
         return 0;
     }
 
-    return WifiSocketBuffer_available(_sock);
+    return WiFiSocketBuffer_available(_sock);
 }
 
 int WiFiClient_readChar(uint8 _sock) {
-    if (!available(_sock)) {
+    if (!WiFiClient_available(_sock)) {
         return -1;
     }
 
     uint8 ch;
-    WifiSocketBuffer_read(_sock, &ch, sizeof(ch));
+    WiFiSocketBuffer_read(_sock, &ch, sizeof(ch));
     return ch;
 }
 
 int WiFiClient_read(uint8 *buf, size_t size) {
-    return WifiSocketBuffer_read(_sock, buf, size);
+    return WiFiSocketBuffer_read(_sock, buf, size);
 }
 
 int WiFiClient_peek(uint8 _sock) {
@@ -148,7 +146,7 @@ void WiFiClient_stop(uint8 _sock) {
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 
-    WifiSocketBuffer_close(_sock);
+    WiFiSocketBuffer_close(_sock);
     _sock = NO_SOCKET_AVAIL;
 }
 

@@ -52,6 +52,8 @@ void WiFiClient_stop(uint8 _sock);
 
 int WiFiClient_connected(uint8 _sock);
 
+int WiFiClient_status(uint8 _sock);
+
 uint32 WiFiClient_remoteIP(uint8 _sock);
 
 uint16 WiFiClient_remotePort(uint8 _sock);

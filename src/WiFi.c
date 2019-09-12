@@ -87,7 +87,7 @@ uint8 WiFi_beginAP_common(void) {
     uint8 attempts = WL_MAX_ATTEMPT_CONNECTION;
 
     do {
-        delay(WL_DELAY_START_CONNECTION);
+        vTaskDelay(pdMS_TO_TICKS(WL_DELAY_START_CONNECTION));
         status = WiFiDrv_getConnectionStatus();
     } while (((status == WL_IDLE_STATUS) || (status == WL_SCAN_COMPLETED)) && (--attempts > 0));
     return status;
@@ -104,7 +104,7 @@ uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 channel) {
     return WiFi_beginAP_common();
 }
 
-uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 *passphrase) {
+uint8 WiFi_beginAP_ssid_passphrase(uint8 *ssid, uint8 *passphrase) {
     return WiFi_beginAP_ssid_passphrase_channel(ssid, passphrase, 1);
 }
 

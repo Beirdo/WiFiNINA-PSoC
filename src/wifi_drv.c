@@ -43,7 +43,7 @@ uint8 WiFiDrv_fwVersion[WL_FW_VER_LENGTH] = {0};
 /*
  * Get network Data information
  */
-static int WiFiDrv_getNetworkData(uint8 *ip, uint8 *mask, uint8 *gwip);
+static int WiFiDrv_getNetworkData(uint32 *ip, uint32 *mask, uint32 *gwip);
 
 static int WiFiDrv_reqHostByName(uint8 *aHostname);
 
@@ -51,7 +51,7 @@ static int WiFiDrv_getHostByNameResults(uint32 *aResult);
 
 
 // Private Methods
-static int WiFiDrv_getNetworkData(uint8 *ip, uint8 *mask, uint8 *gwip) {
+static int WiFiDrv_getNetworkData(uint32 *ip, uint32 *mask, uint32 *gwip) {
     uint8 _dummy = DUMMY_DATA;
     tParam inParams[] = {{sizeof(_dummy), &_dummy}};
     tParam outParams[] = {{4, ip},
