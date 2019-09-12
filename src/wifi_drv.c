@@ -108,7 +108,7 @@ int WiFiDrv_wifiSetNetwork(uint8 *ssid, uint8 ssid_len) {
     return (_data == WIFI_SPI_ACK) ? WL_SUCCESS : WL_FAILURE;
 }
 
-int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, const uint8 len) {
+int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, uint8 len) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len, ssid},
                          {len,      passphrase}};
@@ -124,7 +124,7 @@ int WiFiDrv_wifiSetPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, co
 }
 
 
-int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, const uint8 len) {
+int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, uint8 len) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len,    ssid},
                          {KEY_IDX_LEN, &key_idx},
@@ -538,7 +538,7 @@ int WiFiDrv_wifiSetApNetwork(uint8 *ssid, uint8 ssid_len, uint8 channel) {
     return (_data == WIFI_SPI_ACK) ? WL_SUCCESS : WL_FAILURE;
 }
 
-int WiFiDrv_wifiSetApPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, const uint8 len, uint8 channel) {
+int WiFiDrv_wifiSetApPassphrase(uint8 *ssid, uint8 ssid_len, uint8 *passphrase, uint8 len, uint8 channel) {
     uint8 _data = 0;
     tParam inParams[] = {{ssid_len, ssid}, {len, passphrase}, {1, &channel}};
     tParam outParams[] = {{4, &_data}};

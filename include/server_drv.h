@@ -49,9 +49,9 @@ int ServerDrv_getData(uint8 sock, uint8 *data, uint8 peek);
 
 int ServerDrv_getDataBuf(uint8 sock, uint8 *data, uint16 *len);
 
-int ServerDrv_insertDataBuf(uint8 sock, const uint8 *_data, uint16 _dataLen);
+int ServerDrv_insertDataBuf(uint8 sock, uint8 *_data, uint16 _dataLen);
 
-int ServerDrv_sendData(uint8 sock, const uint8 *data, uint16 len);
+int ServerDrv_sendData(uint8 sock, uint8 *data, uint16 len);
 
 int ServerDrv_sendUdpData(uint8 sock);
 

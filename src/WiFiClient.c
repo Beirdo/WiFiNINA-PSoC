@@ -89,7 +89,7 @@ int WiFiClient_writeChar(uint8 _sock, uint8 ch) {
     return WiFiClient_write(_sock, &ch, 1);
 }
 
-int WiFiClient_write(uint8 _sock, const uint8 *buf, size_t size) {
+int WiFiClient_write(uint8 _sock, uint8 *buf, size_t size) {
     if (_sock == NO_SOCKET_AVAIL || size == 0) {
         setWriteError();
         return 0;

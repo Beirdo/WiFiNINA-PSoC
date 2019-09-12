@@ -199,7 +199,7 @@ int ServerDrv_getDataBuf(uint8 sock, uint8 *_data, uint16 *_dataLen) {
     return outParams[0].dataLen;
 }
 
-int ServerDrv_insertDataBuf(uint8 sock, const uint8 *data, uint16 _len) {
+int ServerDrv_insertDataBuf(uint8 sock, uint8 *data, uint16 _len) {
     int16 response = 0;
     tDataParam inParams[] = {{1,    &sock},
                              {_len, data}};
@@ -234,7 +234,7 @@ int ServerDrv_sendUdpData(uint8 sock) {
     return (response == 1);
 }
 
-int ServerDrv_sendTcpData(uint8 sock, const uint8 *data, uint16 len) {
+int ServerDrv_sendTcpData(uint8 sock, uint8 *data, uint16 len) {
     uint8 response = 0;
     tDataParam inParams[] = {{1,   &sock},
                              {len, data}};
@@ -250,7 +250,7 @@ int ServerDrv_sendTcpData(uint8 sock, const uint8 *data, uint16 len) {
 }
 
 int ServerDrv_checkDataSent(uint8 sock) {
-    const uint16 TIMEOUT_DATA_SENT = 25;
+    uint16 TIMEOUT_DATA_SENT = 25;
     uint16 timeout = 0;
     uint8 response = 0;
     tParam inParams[] = {{1, &sock}};
