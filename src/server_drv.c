@@ -228,7 +228,7 @@ int ServerDrv_sendUdpData(uint8 sock) {
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(SEND_DATA_UDP_CMD, 20, &paramsRead, outParams, 1);
-    if (outParams[0].dataLen == 0) {
+    if (outParams[0].paramLen == 0) {
         return 0;
     }
     return (response == 1);
@@ -238,7 +238,7 @@ int ServerDrv_sendTcpData(uint8 sock, uint8 *data, uint16 len) {
     uint8 response = 0;
     tDataParam inParams[] = {{1,   &sock},
                              {len, data}};
-    tDataParam outParams[] = {{1, &response}};
+    tParam outParams[] = {{1, &response}};
     uint8 paramsRead;
 
     // Send Command
@@ -270,7 +270,7 @@ int ServerDrv_checkDataSent(uint8 sock) {
             vTaskDelay(pdMS_TO_TICKS(100));
         }
     } while ((response == 0) && (timeout < TIMEOUT_DATA_SENT));
-    return (timeout != TIMEOUT_DATA_SENT)l
+    return (timeout != TIMEOUT_DATA_SENT);
 }
 
 int ServerDrv_getSocket() {
