@@ -24,7 +24,6 @@
 
 #include "project.h"
 #include "wifi_spi.h"
-#include "IPAddress.h"
 
 // Key index length
 #define KEY_IDX_LEN     1
@@ -130,23 +129,23 @@ uint8 *WiFiDrv_getMacAddress(void);
 /*
  * Get the interface IP address.
  *
- * return: copy the ip address value in IPAddress object
+ * return: copy the ip address value
  */
-int WiFiDrv_getIpAddress(IPAddress *ip);
+int WiFiDrv_getIpAddress(uint32 *ip);
 
 /*
  * Get the interface subnet mask address.
  *
- * return: copy the subnet mask address value in IPAddress object
+ * return: copy the subnet mask address value
  */
-int WiFiDrv_getSubnetMask(IPAddress *mask);
+int WiFiDrv_getSubnetMask(uint32 *mask);
 
 /*
  * Get the gateway ip address.
  *
- * return: copy the gateway ip address value in IPAddress object
+ * return: copy the gateway ip address value
  */
-int WiFiDrv_getGatewayIP(IPAddress *ip);
+int WiFiDrv_getGatewayIP(uint32 *ip);
 
 /*
  * Return the current SSID associated with the network
@@ -226,11 +225,11 @@ int WiFiDrv_getChannelNetworks(uint8 networkItem);
 /*
  * Resolve the given hostname to an IP address.
  * param aHostname: Name to be resolved
- * param aResult: IPAddress structure to store the returned IP address
+ * param aResult: uint32 to store the returned IP address
  * result: 1 if aIPAddrString was successfully converted to an IP address,
  *          else error code
  */
-int WiFiDrv_getHostByName(uint8 *aHostname, IPAddress *aResult);
+int WiFiDrv_getHostByName(uint8 *aHostname, uint32 *aResult);
 
 /*
  * Get the firmware version

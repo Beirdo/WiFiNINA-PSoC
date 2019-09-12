@@ -43,7 +43,7 @@ void WiFi_init() {
     WiFiDrv_wifiDriverInit();
 }
 
-const char *WiFi_firmwareVersion() {
+uint8 *WiFi_firmwareVersion() {
     return WiFiDrv_getFwVersion();
 }
 
@@ -60,14 +60,14 @@ int WiFi_begin_common(void) {
 
 }
 
-int WiFi_begin_open(const char *ssid) {
+int WiFi_begin_open(uint8 *ssid) {
     if (WiFiDrv_wifiSetNetwork(ssid, strlen(ssid)) == WL_FAILURE) {
         return WL_CONNECT_FAILED;
     }
     return WiFi_begin_common();
 }
 
-int WiFi_begin_WEP(const char *ssid, uint8 key_idx, const char *key) {
+int WiFi_begin_WEP(uint8 *ssid, uint8 key_idx, uint8 *key) {
     // set encryption key
     if (WiFiDrv_wifiSetKey(ssid, strlen(ssid), key_idx, key, strlen(key)) == WL_FAILURE) {
         status = WL_CONNECT_FAILED;
@@ -75,7 +75,7 @@ int WiFi_begin_WEP(const char *ssid, uint8 key_idx, const char *key) {
     return WiFi_begin_common();
 }
 
-int WiFi_begin(const char *ssid, const char *passphrase) {
+int WiFi_begin(uint8 *ssid, uint8 *passphrase) {
     // set passphrase
     if (WiFiDrv_wifiSetPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase)) == WL_FAILURE) {
         status = WL_CONNECT_FAILED;
@@ -94,22 +94,22 @@ uint8 WiFi_beginAP_common(void) {
     return status;
 }
 
-uint8 WiFi_beginAP_ssid(const char *ssid) {
+uint8 WiFi_beginAP_ssid(uint8 *ssid) {
     return WiFi_beginAP_ssid_channel(ssid, 1);
 }
 
-uint8 WiFi_beginAP_ssid_channel(const char *ssid, uint8 channel) {
+uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 channel) {
     if (WiFiDrv_wifiSetApNetwork(ssid, strlen(ssid), channel) == WL_FAILURE) {
         return WL_AP_FAILED;
     }
     return WiFi_beginAP_common();
 }
 
-uint8 WiFi_beginAP_ssid_channel(const char *ssid, const char *passphrase) {
+uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 *passphrase) {
     return WiFi_beginAP_ssid_passphrase_channel(ssid, passphrase, 1);
 }
 
-uint8 WiFi_beginAP_ssid_passphrase_channel(const char *ssid, const char *passphrase, uint8 channel) {
+uint8 WiFi_beginAP_ssid_passphrase_channel(uint8 *ssid, uint8 *passphrase, uint8 channel) {
     // set passphrase
     if (WiFiDrv_wifiSetApPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase), channel) == WL_FAILURE) {
         return WL_AP_FAILED;
@@ -117,35 +117,35 @@ uint8 WiFi_beginAP_ssid_passphrase_channel(const char *ssid, const char *passphr
     return WiFi_beginAP_common();
 }
 
-void WiFi_config_static(IPAddress local_ip) {
+void WiFi_config_static(uint32 local_ip) {
     WiFiDrv_config(1, (uint32) local_ip, 0, 0);
 }
 
-void WiFi_config_static_dns(IPAddress local_ip, IPAddress dns_server) {
+void WiFi_config_static_dns(uint32 local_ip, uint32 dns_server) {
     WiFiDrv_config(1, (uint32) local_ip, 0, 0);
     WiFiDrv_setDNS(1, (uint32) dns_server, 0);
 }
 
-void WiFi_config_static_dns_gateway(IPAddress local_ip, IPAddress dns_server, IPAddress gateway) {
+void WiFi_config_static_dns_gateway(uint32 local_ip, uint32 dns_server, uint32 gateway) {
     WiFiDrv_config(2, (uint32) local_ip, (uint32) gateway, 0);
     WiFiDrv_setDNS(1, (uint32) dns_server, 0);
 }
 
 void
-WiFi_config_static_dns_gateway_subnet(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet) {
+WiFi_config_static_dns_gateway_subnet(uint32 local_ip, uint32 dns_server, uint32 gateway, uint32 subnet) {
     WiFiDrv_config(3, (uint32) local_ip, (uint32) gateway, (uint32) subnet);
     WiFiDrv_setDNS(1, (uint32) dns_server, 0);
 }
 
-void WiFi_setDNS(IPAddress dns_server1) {
+void WiFi_setDNS(uint32 dns_server1) {
     WiFiDrv_setDNS(1, (uint32) dns_server1, 0);
 }
 
-void WiFi_setDNS_two_servers(IPAddress dns_server1, IPAddress dns_server2) {
+void WiFi_setDNS_two_servers(uint32 dns_server1, uint32 dns_server2) {
     WiFiDrv_setDNS(2, (uint32) dns_server1, (uint32) dns_server2);
 }
 
-void WiFi_setHostname(const char *name) {
+void WiFi_setHostname(uint8 *name) {
     WiFiDrv_setHostname(name);
 }
 
@@ -163,25 +163,25 @@ uint8 *WiFi_macAddress(uint8 *mac) {
     return mac;
 }
 
-IPAddress WiFi_localIP() {
-    IPAddress ret;
+uint32 WiFi_localIP() {
+    uint32 ret;
     WiFiDrv_getIpAddress(ret);
     return ret;
 }
 
-IPAddress WiFi_subnetMask() {
-    IPAddress ret;
+uint32 WiFi_subnetMask() {
+    uint32 ret;
     WiFiDrv_getSubnetMask(ret);
     return ret;
 }
 
-IPAddress WiFi_gatewayIP() {
-    IPAddress ret;
+uint32 WiFi_gatewayIP() {
+    uint32 ret;
     WiFiDrv_getGatewayIP(ret);
     return ret;
 }
 
-const char *WiFi_SSID() {
+uint8 *WiFi_SSID() {
     return WiFiDrv_getCurrentSSID();
 }
 
@@ -215,7 +215,7 @@ int8 WiFi_scanNetworks() {
     return numOfNetworks;
 }
 
-const char *WiFi_SSID_index(uint8 networkItem) {
+uint8 *WiFi_SSID_index(uint8 networkItem) {
     return WiFiDrv_getSSIDNetworks(networkItem);
 }
 
@@ -239,7 +239,7 @@ uint8 WiFi_status() {
     return WiFiDrv_getConnectionStatus();
 }
 
-int WiFi_hostByName(const char *aHostname, IPAddress *aResult) {
+int WiFi_hostByName(uint8 *aHostname, uint32 *aResult) {
     return WiFiDrv_getHostByName(aHostname, aResult);
 }
 
@@ -255,8 +255,8 @@ void WiFi_noLowPowerMode() {
     WiFiDrv_setPowerMode(0);
 }
 
-int WiFi_ping_hostname(const char *hostname, int ttl) {
-    IPAddress ip;
+int WiFi_ping_hostname(uint8 *hostname, int ttl) {
+    uint32 ip;
 
     if (!hostByName(hostname, ip)) {
         return WL_PING_UNKNOWN_HOST;
@@ -265,7 +265,7 @@ int WiFi_ping_hostname(const char *hostname, int ttl) {
     return WiFi_ping_ipaddress(ip, ttl);
 }
 
-int WiFi_ping_ipaddress(IPAddress host, int ttl) {
+int WiFi_ping_ipaddress(uint32 host, int ttl) {
     if (ttl <= 0) {
         ttl = 128;
     }

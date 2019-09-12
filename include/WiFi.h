@@ -28,23 +28,21 @@
 
 #include "wl_definitions.h"
 #include "wl_types.h"
-#include "IPAddress.h"
 #include "WiFiClient.h"
-#include "WiFiServer.h"
 
 void WiFi_init();
 
 /*
  * Get firmware version
  */
-const char *WiFi_firmwareVersion();
+uint8 *WiFi_firmwareVersion();
 
 
 /* Start Wifi connection for OPEN networks
  *
  * param ssid: Pointer to the SSID string.
  */
-int WiFi_begin_open(const char *ssid);
+int WiFi_begin_open(uint8 *ssid);
 
 /* Start Wifi connection with WEP encryption.
  * Configure a key into the device. The key type (WEP-40, WEP-104)
@@ -54,7 +52,7 @@ int WiFi_begin_open(const char *ssid);
  * param key_idx: The key index to set. Valid values are 0-3.
  * param key: Key input buffer.
  */
-int WiFi_begin_WEP(const char *ssid, uint8 key_idx, const char *key);
+int WiFi_begin_WEP(uint8 *ssid, uint8 key_idx, uint8 *key);
 
 /* Start Wifi connection with passphrase
  * the most secure supported mode will be automatically selected
@@ -63,28 +61,28 @@ int WiFi_begin_WEP(const char *ssid, uint8 key_idx, const char *key);
  * param passphrase: Passphrase. Valid characters in a passphrase
  *        must be between ASCII 32-126 (decimal).
  */
-int WiFi_begin_passphrase(const char *ssid, const char *passphrase);
+int WiFi_begin_passphrase(uint8 *ssid, uint8 *passphrase);
 
-uint8_t WiFi_beginAP_ssid(const char *ssid);
+uint8 WiFi_beginAP_ssid(uint8 *ssid);
 
-uint8_t WiFi_beginAP_ssid_channel(const char *ssid, uint8 channel);
+uint8 WiFi_beginAP_ssid_channel(uint8 *ssid, uint8 channel);
 
-uint8_t WiFi_beginAP_ssid_passphrase(const char *ssid, const char *passphrase);
+uint8 WiFi_beginAP_ssid_passphrase(uint8 *ssid, uint8 *passphrase);
 
-uint8_t WiFi_beginAP_ssid_passphrase_channel(const char *ssid, const char *passphrase, uint8 channel);
+uint8 WiFi_beginAP_ssid_passphrase_channel(uint8 *ssid, uint8 *passphrase, uint8 channel);
 
 /* Change Ip configuration settings disabling the dhcp client
     *
     * param local_ip: 	Static ip configuration
     */
-void WiFi_config_static(IPAddress local_ip);
+void WiFi_config_static(uint32 local_ip);
 
 /* Change Ip configuration settings disabling the dhcp client
     *
     * param local_ip: 	Static ip configuration
 * param dns_server:     IP configuration for DNS server 1
     */
-void WiFi_config_static_dns(IPAddress local_ip, IPAddress dns_server);
+void WiFi_config_static_dns(uint32 local_ip, uint32 dns_server);
 
 /* Change Ip configuration settings disabling the dhcp client
     *
@@ -92,7 +90,7 @@ void WiFi_config_static_dns(IPAddress local_ip, IPAddress dns_server);
 * param dns_server:     IP configuration for DNS server 1
     * param gateway : 	Static gateway configuration
     */
-void WiFi_config_static_dns_gateway(IPAddress local_ip, IPAddress dns_server, IPAddress gateway);
+void WiFi_config_static_dns_gateway(uint32 local_ip, uint32 dns_server, uint32 gateway);
 
 /* Change Ip configuration settings disabling the dhcp client
     *
@@ -102,13 +100,13 @@ void WiFi_config_static_dns_gateway(IPAddress local_ip, IPAddress dns_server, IP
     * param subnet:		Static Subnet mask
     */
 void
-WiFi_config_static_dns_gateway_subnet(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet);
+WiFi_config_static_dns_gateway_subnet(uint32 local_ip, uint32 dns_server, uint32 gateway, uint32 subnet);
 
 /* Change DNS Ip configuration
  *
  * param dns_server1: ip configuration for DNS server 1
  */
-void WiFi_setDNS(IPAddress dns_server1);
+void WiFi_setDNS(uint32 dns_server1);
 
 /* Change DNS Ip configuration
  *
@@ -116,7 +114,7 @@ void WiFi_setDNS(IPAddress dns_server1);
  * param dns_server2: ip configuration for DNS server 2
  *
  */
-void WiFi_setDNS_two_servers(IPAddress dns_server1, IPAddress dns_server2);
+void WiFi_setDNS_two_servers(uint32 dns_server1, uint32 dns_server2);
 
 
 /* Set the hostname used for DHCP requests
@@ -124,7 +122,7 @@ void WiFi_setDNS_two_servers(IPAddress dns_server1, IPAddress dns_server2);
  * param name: hostname to set
  *
  */
-void WiFi_setHostname(const char *name);
+void WiFi_setHostname(uint8 *name);
 
 /*
  * Disconnect from the network
@@ -138,7 +136,7 @@ void WiFi_end(void);
 /*
  * Get the interface MAC address.
  *
- * return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
+ * return: pointer to uint8 array with length WL_MAC_ADDR_LENGTH
  */
 uint8 *WiFi_macAddress(uint8 *mac);
 
@@ -147,34 +145,34 @@ uint8 *WiFi_macAddress(uint8 *mac);
  *
  * return: Ip address value
  */
-IPAddress WiFi_localIP();
+uint32 WiFi_localIP();
 
 /*
  * Get the interface subnet mask address.
  *
  * return: subnet mask address value
  */
-IPAddress WiFi_subnetMask();
+uint32 WiFi_subnetMask();
 
 /*
  * Get the gateway ip address.
  *
  * return: gateway ip address value
  */
-IPAddress WiFi_gatewayIP();
+uint32 WiFi_gatewayIP();
 
 /*
  * Return the current SSID associated with the network
  *
  * return: ssid string
  */
-const char *WiFi_SSID();
+uint8 *WiFi_SSID();
 
 /*
   * Return the current BSSID associated with the network.
   * It is the MAC address of the Access Point
   *
-  * return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
+  * return: pointer to uint8 array with length WL_MAC_ADDR_LENGTH
   */
 uint8 *WiFi_BSSID(uint8 *bssid);
 
@@ -207,7 +205,7 @@ int8 WiFi_scanNetworks();
  *
  * return: ssid string of the specified item on the networks scanned list
  */
-const char *WiFi_SSID_index(uint8 networkItem);
+uint8 *WiFi_SSID_index(uint8 networkItem);
 
 /*
  * Return the encryption type of the networks discovered during the scanNetworks
@@ -236,16 +234,16 @@ int32 WiFi_RSSI_index(uint8 networkItem);
  *
  * return: one of the value defined in wl_status_t
  */
-uint8_t WiFi_status();
+uint8 WiFi_status();
 
 /*
  * Resolve the given hostname to an IP address.
  * param aHostname: Name to be resolved
- * param aResult: pointer to IPAddress structure to store the returned IP address
+ * param aResult: pointer to uint32 structure to store the returned IP address
  * result: 1 if aIPAddrString was successfully converted to an IP address,
  *          else error code
  */
-int WiFi_hostByName(const char *aHostname, IPAddress *aResult);
+int WiFi_hostByName(uint8 *aHostname, uint32 *aResult);
 
 unsigned long WiFi_getTime();
 
@@ -253,9 +251,9 @@ void WiFi_lowPowerMode();
 
 void WiFi_noLowPowerMode();
 
-int WiFi_ping_hostname(const char *hostname, uint8 ttl);
+int WiFi_ping_hostname(uint8 *hostname, uint8 ttl);
 
-int WiFi_ping_ipaddress(IPAddress host, uint8 ttl);
+int WiFi_ping_ipaddress(uint32 host, uint8 ttl);
 
 void WiFi_setLEDs(uint8 red, uint8 green, uint8 blue);
 

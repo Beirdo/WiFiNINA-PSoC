@@ -47,7 +47,7 @@ static int WiFiDrv_getNetworkData(uint8 *ip, uint8 *mask, uint8 *gwip);
 
 static int WiFiDrv_reqHostByName(uint8 *aHostname);
 
-static int WiFiDrv_getHostByNameResults(IPAddress *aResult);
+static int WiFiDrv_getHostByNameResults(uint32 *aResult);
 
 
 // Private Methods
@@ -238,19 +238,19 @@ uint8 *WiFiDrv_getMacAddress(void) {
     return WiFiDrv__mac;
 }
 
-int WiFiDrv_getIpAddress(IPAddress *ip) {
+int WiFiDrv_getIpAddress(uint32 *ip) {
     int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
     *ip = WiFiDrv__localIp;
     return retVal;
 }
 
-int WiFiDrv_getSubnetMask(IPAddress *mask) {
+int WiFiDrv_getSubnetMask(uint32 *mask) {
     int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
     *mask = WiFiDrv__subnetMask;
     return retVal;
 }
 
-int WiFiDrv_getGatewayIP(IPAddress *ip) {
+int WiFiDrv_getGatewayIP(uint32 *ip) {
     int retVal = WiFiDrv_getNetworkData(WiFiDrv__localIp, WiFiDrv__subnetMask, WiFiDrv__gatewayIp);
     *ip = _WiFiDrv__gatewayIp;
     return retVal;
@@ -452,7 +452,7 @@ static int WiFiDrv_reqHostByName(uint8 *aHostname) {
     return result;
 }
 
-static int WiFiDrv_getHostByNameResults(IPAddress *aResult) {
+static int WiFiDrv_getHostByNameResults(uint32 *aResult) {
     uint8 _ipAddr[WL_IPV4_LENGTH];
     uint32 dummy = 0xFFFFFFFF;
     int result = 0;
@@ -472,7 +472,7 @@ static int WiFiDrv_getHostByNameResults(IPAddress *aResult) {
     return result;
 }
 
-int WiFiDrv_getHostByName(uint8 *aHostname, IPAddress *aResult) {
+int WiFiDrv_getHostByName(uint8 *aHostname, uint32 *aResult) {
     if (WiFiDrv_reqHostByName(aHostname)) {
         return WiFiDrv_getHostByNameResults(aResult);
     } else {

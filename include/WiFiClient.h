@@ -23,7 +23,6 @@
 #define wificlient_h
 
 #include "project.h"
-#include "IPAddress.h"
 
 uint8 WiFiClient_status();
 

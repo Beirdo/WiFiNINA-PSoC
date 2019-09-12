@@ -34,14 +34,14 @@
 static int WiFiClient_connectCommon(uint8 _sock);
 
 int WiFiClient_connectHostname(uint8 *host, uint16 port) {
-    IPAddress remote_addr;
+    uint32 remote_addr;
     if (WiFi_hostByName(host, &remote_addr)) {
         return WiFiClient_connect(remote_addr, port);
     }
     return 0;
 }
 
-int WiFiClient_connect(IPAddress ip, uint16 port) {
+int WiFiClient_connect(uint32 ip, uint16 port) {
     uint8 _sock = ServerDrv_getSocket();
     if (_sock == NO_SOCKET_AVAIL) {
         return _sock;
@@ -65,7 +65,7 @@ static int WiFiClient_connectCommon(uint8 _sock) {
     return _sock;
 }
 
-int WiFiClient_connectSSL(IPAddress ip, uint16 port) {
+int WiFiClient_connectSSL(uint32 ip, uint16 port) {
     _sock = ServerDrv_getSocket();
     if (_sock == NO_SOCKET_AVAIL) {
         return _sock;
