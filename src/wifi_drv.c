@@ -133,7 +133,7 @@ int WiFiDrv_wifiSetKey(uint8 *ssid, uint8 ssid_len, uint8 key_idx, uint8 *key, c
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(SET_KEY_CMD, 3, inParms);
+    SpiDrv_sendCmd(SET_KEY_CMD, 3, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(SET_KEY_CMD, 16, &paramsRead, outParams, 1) {
@@ -203,7 +203,7 @@ int WiFiDrv_disconnect(void) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(DISCONNECT_CMD, 1, inParms);
+    SpiDrv_sendCmd(DISCONNECT_CMD, 1, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(DISCONNECT_CMD, 16, &paramsRead, outParams, 1);

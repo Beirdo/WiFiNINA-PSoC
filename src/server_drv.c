@@ -38,7 +38,7 @@ int ServerDrv_startServer(uint16 port, uint8 sock, uint8 protMode) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(START_SERVER_TCP_CMD, 3, inParms);
+    SpiDrv_sendCmd(START_SERVER_TCP_CMD, 3, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -57,7 +57,7 @@ int ServerDrv_startServerIpAddress(uint32 ipAddress, uint16 port, uint8 sock, ui
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(START_SERVER_TCP_CMD, 4, inParms);
+    SpiDrv_sendCmd(START_SERVER_TCP_CMD, 4, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(START_SERVER_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -77,7 +77,7 @@ int ServerDrv_startClient(uint32 ipAddress, uint16 port, uint8 sock, uint8 protM
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 4, inParms);
+    SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 4, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -97,7 +97,7 @@ int ServerDrv_startClientHostname(uint8 *host, uint8 host_len, uint32 ipAddress,
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 5, inParms);
+    SpiDrv_sendCmd(START_CLIENT_TCP_CMD, 5, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(START_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -114,7 +114,7 @@ int ServerDrv_stopClient(uint8 sock) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(STOP_CLIENT_TCP_CMD, 1, inParms);
+    SpiDrv_sendCmd(STOP_CLIENT_TCP_CMD, 1, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(STOP_CLIENT_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -131,7 +131,7 @@ int ServerDrv_getServerState(uint8 sock) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(GET_STATE_TCP_CMD, 1, inParms);
+    SpiDrv_sendCmd(GET_STATE_TCP_CMD, 1, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(GET_STATE_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -147,7 +147,7 @@ int ServerDrv_getClientState(uint8 sock) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(GET_CLIENT_STATE_TCP_CMD, 1, inParms);
+    SpiDrv_sendCmd(GET_CLIENT_STATE_TCP_CMD, 1, inParams);
 
     // Wait for reply
     if (!SpiDrv_receiveResponseCmd(GET_CLIENT_STATE_TCP_CMD, 16, &paramsRead, outParams, 1) {
@@ -163,7 +163,7 @@ int ServerDrv_availData(uint8 sock) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(AVAIL_DATA_TCP_CMD, 1, inParms);
+    SpiDrv_sendCmd(AVAIL_DATA_TCP_CMD, 1, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(AVAIL_DATA_TCP_CMD, 20, &paramsRead, outParams, 1);
@@ -178,7 +178,7 @@ int ServerDrv_getData(uint8 sock, uint8 *data, uint8 peek) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(GET_DATA_TCP_CMD, 1, inParms);
+    SpiDrv_sendCmd(GET_DATA_TCP_CMD, 1, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(GET_DATA_TCP_CMD, WIFI_SOCKET_BUFFER_SIZE, &paramsRead, outParams, 1);
@@ -192,7 +192,7 @@ int ServerDrv_getDataBuf(uint8 sock, uint8 *_data, uint16 *_dataLen) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendBuffer(GET_DATABUF_TCP_CMD, 2, inParms);
+    SpiDrv_sendBuffer(GET_DATABUF_TCP_CMD, 2, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseBuffer(GET_DATABUF_TCP_CMD, WIFI_SOCKET_BUFFER_SIZE, &paramsRead, outParams, 1);
@@ -207,7 +207,7 @@ int ServerDrv_insertDataBuf(uint8 sock, const uint8 *data, uint16 _len) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendBuffer(INSERT_DATABUF_CMD, 2, inParms);
+    SpiDrv_sendBuffer(INSERT_DATABUF_CMD, 2, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseBuffer(INSERT_DATABUF_CMD, 20, &paramsRead, outParams, 1);
@@ -224,7 +224,7 @@ int ServerDrv_sendUdpData(uint8 sock) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(SEND_DATA_UDP_CMD, 1, inParms);
+    SpiDrv_sendCmd(SEND_DATA_UDP_CMD, 1, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(SEND_DATA_UDP_CMD, 20, &paramsRead, outParams, 1);
@@ -242,7 +242,7 @@ int ServerDrv_sendTcpData(uint8 sock, const uint8 *data, uint16 len) {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendBuffer(SEND_DATA_TCP_CMD, 2, inParms);
+    SpiDrv_sendBuffer(SEND_DATA_TCP_CMD, 2, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(SEND_DATA_TCP_CMD, 20, &paramsRead, outParams, 1);
@@ -259,7 +259,7 @@ int ServerDrv_checkDataSent(uint8 sock) {
 
     do {
         // Send Command
-        SpiDrv_sendCmd(DATA_SENT_TCP_CMD, 1, inParms);
+        SpiDrv_sendCmd(DATA_SENT_TCP_CMD, 1, inParams);
 
         // Wait for reply
         SpiDrv_receiveResponseCmd(DATA_SENT_TCP_CMD, 20, &paramsRead, outParams, 1);
@@ -280,7 +280,7 @@ int ServerDrv_getSocket() {
     uint8 paramsRead;
 
     // Send Command
-    SpiDrv_sendCmd(GET_SOCKET_CMD, 0, inParms);
+    SpiDrv_sendCmd(GET_SOCKET_CMD, 0, inParams);
 
     // Wait for reply
     SpiDrv_receiveResponseCmd(GET_SOCKET_CMD, 20, &paramsRead, outParams, 1);
