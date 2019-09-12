@@ -36,7 +36,7 @@ static int WiFiClient_connectCommon(uint8 _sock);
 int WiFiClient_connectHostname(uint8 *host, uint16 port) {
     uint32 remote_addr;
     if (WiFi_hostByName(host, &remote_addr)) {
-        return WiFiClient_connect(remote_addr, port);
+        return WiFiClient_connect(remote_addr, port, TCP_MODE);
     }
     return 0;
 }
@@ -47,7 +47,7 @@ int WiFiClient_connect(uint32 ip, uint16 port) {
         return _sock;
     }
 
-    ServerDrv_startClient(uint32(ip), port, _sock);
+    ServerDrv_startClient(uint32(ip), port, _sock, TCP_MODE);
     return WiFiClient_connectCommon(_sock);
 }
 

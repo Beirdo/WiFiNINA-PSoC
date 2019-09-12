@@ -30,14 +30,14 @@ typedef enum eProtMode {
 } tProtMode;
 
 // Start server TCP on port specified
-int ServerDrv_startServer(uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
+int ServerDrv_startServer(uint16 port, uint8 sock, uint8 protMode);
 
-int ServerDrv_startServerIpAddress(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
+int ServerDrv_startServerIpAddress(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode);
 
-int ServerDrv_startClient(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode = TCP_MODE);
+int ServerDrv_startClient(uint32 ipAddress, uint16 port, uint8 sock, uint8 protMode);
 
 int ServerDrv_startClientHostname(uint8 *host, uint8 host_len, uint32 ipAddress, uint16 port, uint8 sock,
-                                  uint8 protMode = TCP_MODE);
+                                  uint8 protMode);
 
 int ServerDrv_stopClient(uint8 sock);
 
