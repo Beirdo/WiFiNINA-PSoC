@@ -234,7 +234,7 @@ int ServerDrv_sendUdpData(uint8 sock) {
     return (response == 1);
 }
 
-int ServerDrv_sendTcpData(uint8 sock, uint8 *data, uint16 len) {
+int ServerDrv_sendData(uint8 sock, uint8 *data, uint16 len) {
     uint8 response = 0;
     tDataParam inParams[] = {{1,   &sock},
                              {len, data}};

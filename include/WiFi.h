@@ -99,8 +99,7 @@ void WiFi_config_static_dns_gateway(uint32 local_ip, uint32 dns_server, uint32 g
     * param gateway: 	Static gateway configuration
     * param subnet:		Static Subnet mask
     */
-void
-WiFi_config_static_dns_gateway_subnet(uint32 local_ip, uint32 dns_server, uint32 gateway, uint32 subnet);
+void WiFi_config_static_dns_gateway_subnet(uint32 local_ip, uint32 dns_server, uint32 gateway, uint32 subnet);
 
 /* Change DNS Ip configuration
  *

@@ -74,7 +74,7 @@ int WiFi_begin_WEP(uint8 *ssid, uint8 key_idx, uint8 *key) {
     return WiFi_begin_common();
 }
 
-int WiFi_begin(uint8 *ssid, uint8 *passphrase) {
+int WiFi_begin_passphrase(uint8 *ssid, uint8 *passphrase) {
     // set passphrase
     if (WiFiDrv_wifiSetPassphrase(ssid, ustrlen(ssid), passphrase, ustrlen(passphrase)) == WL_FAILURE) {
         return WL_CONNECT_FAILED;
@@ -230,7 +230,7 @@ uint8 *WiFi_BSSID_index(uint8 networkItem, uint8 *bssid) {
     return WiFiDrv_getBSSIDNetworks(networkItem, bssid);
 }
 
-uint8 WiFi_channelIndex(uint8 networkItem) {
+uint8 WiFi_channel_index(uint8 networkItem) {
     return WiFiDrv_getChannelNetworks(networkItem);
 }
 
